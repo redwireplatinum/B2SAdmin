@@ -5,7 +5,7 @@ local lplr = plrs.LocalPlayer
 local mouse = lplr:GetMouse()
 local aura = 20
 local Prefix = ";"
-title = "Build to Survive Admin v5.8.2"
+title = "Build to Survive Admin v5.8.3"
 if game.ReplicatedStorage.PlayerEvents:FindFirstChild("e"..lplr.UserId) then
 delet = game.ReplicatedStorage.PlayerEvents["e"..lplr.UserId].DestroyItem
 else
@@ -772,14 +772,14 @@ if msg:sub(1, (string.len(Prefix) - 1) + 12) == Prefix.."unloopkill " then
 unloopkill(msg)
 end
 if msg:sub(1, (string.len(Prefix) - 1) +14) == Prefix.."changeprefix " then
-if msg:sub(15,15) ~= "" and not msg:sub(15):find(" ") then
-Prefix = msg:sub(15)
+if msg:sub(15,15) ~= "" and not msg:sub(14 + string.len(Prefix)):find(" ") then
+Prefix = msg:sub(14 + string.len(Prefix))
 end
 end
 end)
 getcmds()
 game.StarterGui:SetCore("SendNotification", {
 Title = title;
-Text = "New prefixes can now be more than one character.";
+Text = "Fixed the prefixchange command, however, new prefixes CANNOT HAVE ANY SPACES.";
 Duration = 10;
 })
