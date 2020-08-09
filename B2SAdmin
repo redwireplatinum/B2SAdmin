@@ -32,6 +32,9 @@ else
     return str
 end
 end
+function prefixlength()
+return string.len(Prefix)
+end
 function stringtotable(str)
 local t = {}
 local arg = ""
@@ -525,7 +528,7 @@ function getcmds()
 print(Commands)
 end
 lplr.Chatted:connect(function(msg)
-if msg:sub(1, (string.len(Prefix) - 1) + 6) == Prefix.."kick " then
+if msg:sub(1, (prefixlength() - 1) + 6) == Prefix.."kick " then
 kick(msg)
 end
 if msg == Prefix.."nobases" then
@@ -543,10 +546,10 @@ for i, enemy in pairs(workspace.Mobs:GetChildren()) do
 delete(enemy)
 end
 end
-if msg:sub(1, (string.len(Prefix) - 1) + 6) == Prefix.."kill " then
+if msg:sub(1, (prefixlength() - 1) + 6) == Prefix.."kill " then
 kill(msg)
 end
-if msg:sub(1, (string.len(Prefix) - 1) + 12) == Prefix.."clear base " then
+if msg:sub(1, (prefixlength() - 1) + 12) == Prefix.."clear base " then
 clearbase(msg)
 end
 if msg == Prefix.."delete products" then
@@ -595,25 +598,25 @@ Text = "Wait for enemies to spawn.";
 end
 end)
 end
-if msg:sub(1, (string.len(Prefix) - 1) + 9) == Prefix.."cripple " then
+if msg:sub(1, (prefixlength() - 1) + 9) == Prefix.."cripple " then
 cripple(msg)
 end
-if msg:sub(1, (string.len(Prefix) - 1) + 13) == Prefix.."removelimbs " then
+if msg:sub(1, (prefixlength() - 1) + 13) == Prefix.."removelimbs " then
 removelimbs(msg)
 end
-if msg:sub(1, (string.len(Prefix) - 1) + 12) == Prefix.."removearms " then
+if msg:sub(1, (prefixlength() - 1) + 12) == Prefix.."removearms " then
 removearms(msg)
 end
-if msg:sub(1, (string.len(Prefix) - 1) + 12) == Prefix.."removelegs " then
+if msg:sub(1, (prefixlength() - 1) + 12) == Prefix.."removelegs " then
 removelegs(msg)
 end
-if msg:sub(1, (string.len(Prefix) - 1) + 12) == Prefix.."noclothing " then
+if msg:sub(1, (prefixlength() - 1) + 12) == Prefix.."noclothing " then
 noclothing(msg)
 end
-if msg:sub(1, (string.len(Prefix) - 1) + 8) == Prefix.."suffer " then
+if msg:sub(1, (prefixlength() - 1) + 8) == Prefix.."suffer " then
 suffer(msg)
 end
-if msg:sub(1, (string.len(Prefix) - 1) + 13) == Prefix.."removetools " then
+if msg:sub(1, (prefixlength() - 1) + 13) == Prefix.."removetools " then
 removetools(msg)
 end
 if msg == Prefix.."noenemies" then
@@ -628,20 +631,20 @@ end
 end
 end
 end
-if msg:sub(1, (string.len(Prefix) - 1) + 12) == Prefix.."permpunish " then
+if msg:sub(1, (prefixlength() - 1) + 12) == Prefix.."permpunish " then
 permpunish(msg)
 end
-if msg:sub(1, (string.len(Prefix) - 1) + 5) == Prefix.."oof " then
+if msg:sub(1, (prefixlength() - 1) + 5) == Prefix.."oof " then
 oof(msg)
 end
-if msg:sub(1, (string.len(Prefix) - 1) + 15) == Prefix.."noaccessories " then
+if msg:sub(1, (prefixlength() - 1) + 15) == Prefix.."noaccessories " then
 noaccessories(msg)
 end
 if msg == Prefix.."getiy" then
 loadstring(game:HttpGet(('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'),true))()
 end
-if msg:sub(1, (string.len(Prefix) - 1) + 9) == Prefix.."ooftime " then
-ooftime = tonumber(msg:sub(10))
+if msg:sub(1, (prefixlength() - 1) + 9) == Prefix.."ooftime " then
+ooftime = tonumber(msg:sub(9 + prefixlength()))
 end
 if msg == Prefix.."partbypart" then
 for i, base in pairs(workspace.Bases:GetChildren()) do
@@ -687,31 +690,31 @@ end
 end
 end)
 end
-if msg:sub(1, (string.len(Prefix) - 1) + 11) == Prefix.."blockspam " then
+if msg:sub(1, (prefixlength() - 1) + 11) == Prefix.."blockspam " then
 blockspam(msg)
 end
-if msg:sub(1, (string.len(Prefix) - 1) + 13) == Prefix.."remove base " then
+if msg:sub(1, (prefixlength() - 1) + 13) == Prefix.."remove base " then
 removebase(msg)
 end
-if msg:sub(1, (string.len(Prefix) - 1) + 12) == Prefix.."thanossnap " then
+if msg:sub(1, (prefixlength() - 1) + 12) == Prefix.."thanossnap " then
 thanossnap(msg)
 end
-if msg:sub(1, (string.len(Prefix) - 1) + 10) == Prefix.."canbuild " then
+if msg:sub(1, (prefixlength() - 1) + 10) == Prefix.."canbuild " then
 canbuild(msg)
 end
-if msg:sub(1, (string.len(Prefix) - 1) + 5) == Prefix.."ban " then
+if msg:sub(1, (prefixlength() - 1) + 5) == Prefix.."ban " then
 ban(msg)
 end
-if msg:sub(1, (string.len(Prefix) - 1) + 11) == Prefix.."blockhead " then
+if msg:sub(1, (prefixlength() - 1) + 11) == Prefix.."blockhead " then
 blockhead(msg)
 end
-if msg:sub(1, (string.len(Prefix) - 1) + 8) == Prefix.."noanim " then
+if msg:sub(1, (prefixlength() - 1) + 8) == Prefix.."noanim " then
 noanim(msg)
 end
-if msg:sub(1, (string.len(Prefix) - 1) + 12) == Prefix.."nosurvival " then
+if msg:sub(1, (prefixlength() - 1) + 12) == Prefix.."nosurvival " then
 nosurvival(msg)
 end
-if msg:sub(1, (string.len(Prefix) - 1) + 8) == Prefix.."noface " then
+if msg:sub(1, (prefixlength() - 1) + 8) == Prefix.."noface " then
 noface(msg)
 end
 if msg == Prefix.."killaura" then
@@ -733,8 +736,8 @@ end
 end
 end)
 end
-if msg:sub(1, (string.len(Prefix) - 1) + 11) == Prefix.."auravalue " then
-aura = tonumber(msg:sub(12))
+if msg:sub(1, (prefixlength() - 1) + 11) == Prefix.."auravalue " then
+aura = tonumber(msg:sub(11 + prefixlength()))
 end
 if msg == Prefix.."antibot" then
 plrs.PlayerAdded:connect(function(plr)
@@ -748,9 +751,9 @@ end
 if msg == Prefix.."cmds" then
 getcmds()
 end
-if msg:sub(1, (string.len(Prefix) - 1) + 7) == Prefix.."unban " then
+if msg:sub(1, (prefixlength() - 1) + 7) == Prefix.."unban " then
 for i, v in pairs(game.Bannedplayers:GetChildren()) do
-if string.lower(v.Name):sub(1, string.len(msg:sub(8))) == string.lower(msg):sub(8) then
+if string.lower(v.Name):sub(1, string.len(msg:sub(7 + prefixlength()))) == string.lower(msg):sub(7 + prefixlength()) then
 v:Destroy()
 end
 end
@@ -765,15 +768,15 @@ print(v.Name)
 end
 print("----")
 end
-if msg:sub(1, (string.len(Prefix) - 1) + 10) == Prefix.."loopkill " then
+if msg:sub(1, (prefixlength() - 1) + 10) == Prefix.."loopkill " then
 loopkill(msg)
 end
-if msg:sub(1, (string.len(Prefix) - 1) + 12) == Prefix.."unloopkill " then
+if msg:sub(1, (prefixlength() - 1) + 12) == Prefix.."unloopkill " then
 unloopkill(msg)
 end
-if msg:sub(1, (string.len(Prefix) - 1) +14) == Prefix.."changeprefix " then
-if msg:sub(15,15) ~= "" and not msg:sub(14 + string.len(Prefix)):find(" ") then
-Prefix = msg:sub(14 + string.len(Prefix))
+if msg:sub(1, (prefixlength() - 1) +14) == Prefix.."changeprefix " then
+if msg:sub(15,15) ~= "" and not msg:sub(14 + prefixlength()):find(" ") then
+Prefix = msg:sub(14 + prefixlength())
 end
 end
 end)
