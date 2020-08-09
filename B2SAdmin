@@ -112,7 +112,7 @@ function kill(msg)
 local arg = stringtotable(msg)
 function _kill(getplrs)
 for i,plr in pairs(getplrs) do
-if workspace:FindFirstChild(plr.Name) and plr.Character.Head:FindFirstChild("Neck") then
+if plr.Character and plr.Character.Head:FindFirstChild("Neck") then
 delete(plr.Character.Head.Neck)
 end
 end
@@ -147,7 +147,7 @@ function cripple(msg)
 local arg = stringtotable(msg)
 function _cripple(getplrs)
 for i, plr in pairs(getplrs) do
-if workspace:FindFirstChild(plr.Name) and plr.Character:FindFirstChild("HumanoidRootPart") then
+if plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
 delete(plr.Character.HumanoidRootPart)
 end
 end
@@ -158,7 +158,7 @@ function removelimbs(msg)
 local arg = stringtotable(msg)
 function _removelimbs(getplrs)
 for i, plr in pairs(getplrs) do
-if workspace:FindFirstChild(plr.Name) then
+if plr.Character then
 for i, t in pairs(plr.Character:GetChildren()) do
 if t.Name:match("Leg") or t.Name:match("Arm") then
 delete(t)
@@ -173,7 +173,7 @@ function removearms(msg)
 local arg = stringtotable(msg)
 function _removearms(getplrs)
 for i, plr in pairs(getplrs) do
-if workspace:FindFirstChild(plr.Name) then
+if plr.Character then
 for i, t in pairs(plr.Character:GetChildren()) do
 if t.Name:match("Arm") then
 delete(t)
@@ -188,7 +188,7 @@ function removelegs(msg)
 local arg = stringtotable(msg)
 function _removelegs(getplrs)
 for i, plr in pairs(getplrs) do
-if workspace:FindFirstChild(plr.Name) then
+if plr.Character then
 for i, t in pairs(plr.Character:GetChildren()) do
 if t.Name:match("Leg") then
 delete(t)
@@ -220,7 +220,7 @@ function suffer(msg)
 local arg = stringtotable(msg)
 function _suffer(getplrs)
 for i, plr in pairs(getplrs) do
-if workspace:FindFirstChild(plr.Name) and plr.Character:FindFirstChild("Humanoid") then
+if plr.Character and plr.Character:FindFirstChild("Humanoid") then
 delete(plr.Character.Humanoid)
 end
 end
@@ -247,7 +247,7 @@ function permpunish(msg)
 local arg = stringtotable(msg)
 function _permpunish(getplrs)
 for i, plr in pairs(getplrs) do
-if workspace:FindFirstChild(plr.Name) then
+if plr.Character then
 delete(plr.Character)
 end
 end
@@ -258,7 +258,7 @@ function oof(msg)
 local arg = stringtotable(msg)
 function _oof(getplrs)
 for i, plr in pairs(getplrs) do
-if workspace:FindFirstChild(plr.Name) then
+if plr.Character then
 for i, t in pairs(plr.Character:GetChildren()) do
 if t.ClassName ~= "Humanoid" then
 delete(t)
@@ -274,7 +274,7 @@ function noaccessories(msg)
 local arg = stringtotable(msg)
 function _noaccessories(getplrs)
 for i, plr in pairs(getplrs) do
-if workspace:FindFirstChild(plr.Name) then
+if plr.Character then
 for i, t in pairs(plr.Character:GetChildren()) do
 if t.ClassName == "Accessory" then
 delete(t)
@@ -290,7 +290,7 @@ local arg = stringtotable(msg)
 function _blockspam(getplrs)
 for i, plr in pairs(getplrs) do
 game.RunService.Heartbeat:connect(function()
-if workspace:FindFirstChild(plr.Name) and plr.Character:FindFirstChild("HumanoidRootPart") then
+if plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
 place(plr.Character.HumanoidRootPart.CFrame, game.ReplicatedStorage.GameItems.Colors.Green)
 end
 end)
@@ -370,7 +370,7 @@ function blockhead(msg)
 local arg = stringtotable(msg)
 function _blockhead(getplrs)
 for i,plr in pairs(getplrs) do
-if workspace:FindFirstChild(plr.Name) and plr.Character.Head:FindFirstChild("Mesh") then
+if plr.Character and plr.Character.Head:FindFirstChild("Mesh") then
 delete(plr.Character.Head.Mesh)
 end
 end
@@ -381,7 +381,7 @@ function noanim(msg)
 local arg = stringtotable(msg)
 function _noanim(getplrs)
 for i, plr in pairs(getplrs) do
-if workspace:FindFirstChild(plr.Name) and plr.Character.Humanoid:FindFirstChild("Animator") then
+if plr.Character and plr.Character.Humanoid:FindFirstChild("Animator") then
 delete(plr.Character.Humanoid.Animator)
 end
 end
@@ -393,7 +393,7 @@ local arg = stringtotable(msg)
 function _nosurvival(getplrs)
 for i, plr in pairs(getplrs) do
 function delsurvivetag()
-if workspace:FindFirstChild(plr.Name) then
+if plr.Character then
 if plr.Character:FindFirstChild("Survivor") then
 delete(plr.Character.Survivor)
 end
@@ -418,7 +418,7 @@ function noface(msg)
 local arg = stringtotable(msg)
 function _noface(getplrs)
 for i, plr in pairs(getplrs) do
-if workspace:FindFirstChild(plr.Name) and plr.Character.Head:FindFirstChild("face") then
+if plr.Character and plr.Character.Head:FindFirstChild("face") then
 delete(plr.Character.Head.face)
 end
 end
