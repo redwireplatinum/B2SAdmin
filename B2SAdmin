@@ -1,0 +1,785 @@
+local delet
+local ooftime = 0.1
+local plrs = game.Players
+local lplr = plrs.LocalPlayer
+local mouse = lplr:GetMouse()
+local aura = 20
+local Prefix = ";"
+title = "Build to Survive Admin v5.8.2"
+if game.ReplicatedStorage.PlayerEvents:FindFirstChild("e"..lplr.UserId) then
+delet = game.ReplicatedStorage.PlayerEvents["e"..lplr.UserId].DestroyItem
+else
+game.StarterGui:SetCore("SendNotification", {
+Title = title;
+Text = "Admin is currently loading, check the developer log for more info.";
+Duration = 10;
+})
+print("The DestroyItem and PlaceItem remote events have not yet been added to the game.\n Sometimes servers fucking suck and will take a bit to add it,\nbe patient and the admin will load when the remote events are in the game.")
+local folder = game.ReplicatedStorage.PlayerEvents:WaitForChild("e"..lplr.UserId)
+folder:WaitForChild("DestroyItem")
+folder:WaitForChild("PlaceItem")
+delet = game.ReplicatedStorage.PlayerEvents["e"..game.Players.LocalPlayer.UserId].DestroyItem
+end
+function delete(child)
+delet:FireServer(child)
+end
+function stringtobool(str)
+if str == "true" then
+    return true
+elseif str == "false" then
+    return false
+else
+    return str
+end
+end
+function stringtotable(str)
+local t = {}
+local arg = ""
+str = str.." "
+for i = 1, string.len(str) do
+if str:sub(i,i) ~= " " then
+arg = arg..str:sub(i,i)
+else
+if tonumber(arg) then
+table.insert(t, tonumber(arg))
+else
+table.insert(t, arg)
+end
+arg = ""
+end
+end
+return t
+end
+function place(cframe, child)
+delet.Parent.PlaceItem:FireServer(cframe, child)
+end
+function randomplr()
+local t = {}
+local t2 = {}
+for i, plr in pairs(plrs:GetPlayers()) do
+if plr.Name ~= lplr.Name then
+table.insert(t, plr)
+end
+end
+table.insert(t2, t[math.random(1, #t)]) 
+return t2
+end
+function specplr(st)
+local idk
+local t = {}
+for i, plr in pairs(plrs:GetPlayers()) do
+if string.lower(plr.Name):sub(1, string.len(st)) == string.lower(st) then
+idk = plr
+end
+end
+table.insert(t, idk)
+return t
+end
+function others()
+local t = {}
+for i, plr in pairs(plrs:GetPlayers()) do
+if plr.Name ~= lplr.Name then
+table.insert(t, plr)
+end
+end
+return t
+end
+function me()
+local t = {}
+table.insert(t, lplr)
+return t
+end
+function all()
+return plrs:GetPlayers()
+end
+function pickplayer(str, func)
+if str == "others" then
+func(others())
+elseif str == "all" then
+func(all())
+elseif str == "random" then
+func(randomplr())
+elseif str == "me" then
+func(me())
+else
+func(specplr(str))
+end
+end
+function kill(msg)
+local arg = stringtotable(msg)
+function _kill(getplrs)
+for i,plr in pairs(getplrs) do
+if workspace:FindFirstChild(plr.Name) and plr.Character.Head:FindFirstChild("Neck") then
+delete(plr.Character.Head.Neck)
+end
+end
+end
+pickplayer(arg[2], _kill)
+end
+function kick(msg)
+local arg = stringtotable(msg)
+function _kick(getplrs)
+for i,plr in pairs(getplrs) do
+delete(plr)
+end
+end
+pickplayer(arg[2], _kick)
+end
+function clearbase(msg)
+local arg = stringtotable(msg)
+function _clearbase(getplrs)
+for i, plr in pairs(getplrs) do
+for i, child in pairs(workspace.Bases:GetChildren()) do
+if child.Owner.Value == plr.UserId then
+for i, block in pairs(child.Blocks:GetChildren()) do
+delete(block)
+end
+end
+end
+end
+end
+pickplayer(arg[3], _clearbase)
+end
+function cripple(msg)
+local arg = stringtotable(msg)
+function _cripple(getplrs)
+for i, plr in pairs(getplrs) do
+if workspace:FindFirstChild(plr.Name) and plr.Character:FindFirstChild("HumanoidRootPart") then
+delete(plr.Character.HumanoidRootPart)
+end
+end
+end
+pickplayer(arg[2], _cripple)
+end
+function removelimbs(msg)
+local arg = stringtotable(msg)
+function _removelimbs(getplrs)
+for i, plr in pairs(getplrs) do
+if workspace:FindFirstChild(plr.Name) then
+for i, t in pairs(plr.Character:GetChildren()) do
+if t.Name:match("Leg") or t.Name:match("Arm") then
+delete(t)
+end
+end
+end
+end
+end
+pickplayer(arg[2], _removelimbs)
+end
+function removearms(msg)
+local arg = stringtotable(msg)
+function _removearms(getplrs)
+for i, plr in pairs(getplrs) do
+if workspace:FindFirstChild(plr.Name) then
+for i, t in pairs(plr.Character:GetChildren()) do
+if t.Name:match("Arm") then
+delete(t)
+end
+end
+end
+end
+end
+pickplayer(arg[2], _removearms)
+end
+function removelegs(msg)
+local arg = stringtotable(msg)
+function _removelegs(getplrs)
+for i, plr in pairs(getplrs) do
+if workspace:FindFirstChild(plr.Name) then
+for i, t in pairs(plr.Character:GetChildren()) do
+if t.Name:match("Leg") then
+delete(t)
+end
+end
+end
+end
+end
+pickplayer(arg[2], _removelegs)
+end
+function noclothing(msg)
+local arg = stringtotable(msg)
+function _noclothing(getplrs)
+for i, plr in pairs(getplrs) do
+if plr.Character:FindFirstChild("Shirt") then
+delete(plr.Character.Shirt)
+end
+if plr.Character:FindFirstChild("Pants") then
+delete(plr.Character.Pants)
+end
+if plr.Character:FindFirstChild("Shirt Graphic") then
+delete(plr.Character["Shirt Graphic"])
+end
+end
+end
+pickplayer(arg[2], _noclothing)
+end
+function suffer(msg)
+local arg = stringtotable(msg)
+function _suffer(getplrs)
+for i, plr in pairs(getplrs) do
+if workspace:FindFirstChild(plr.Name) and plr.Character:FindFirstChild("Humanoid") then
+delete(plr.Character.Humanoid)
+end
+end
+end
+pickplayer(arg[2], _suffer)
+end
+function removetools(msg)
+local arg = stringtotable(msg)
+function _removetools(getplrs)
+for i, plr in pairs(getplrs) do
+for i, b in pairs(plr.Backpack:GetChildren()) do
+delete(b)
+end
+for i, t in pairs(plr.Character:GetChildren()) do
+if t.ClassName == "Tool" then
+delete(t)
+end
+end
+end
+end
+pickplayer(arg[2], _removetools)
+end
+function permpunish(msg)
+local arg = stringtotable(msg)
+function _permpunish(getplrs)
+for i, plr in pairs(getplrs) do
+if workspace:FindFirstChild(plr.Name) then
+delete(plr.Character)
+end
+end
+end
+pickplayer(arg[2], _permpunish)
+end
+function oof(msg)
+local arg = stringtotable(msg)
+function _oof(getplrs)
+for i, plr in pairs(getplrs) do
+if workspace:FindFirstChild(plr.Name) then
+for i, t in pairs(plr.Character:GetChildren()) do
+if t.ClassName ~= "Humanoid" then
+delete(t)
+wait(ooftime)
+end
+end
+end
+end
+end
+pickplayer(arg[2], _oof)
+end
+function noaccessories(msg)
+local arg = stringtotable(msg)
+function _noaccessories(getplrs)
+for i, plr in pairs(getplrs) do
+if workspace:FindFirstChild(plr.Name) then
+for i, t in pairs(plr.Character:GetChildren()) do
+if t.ClassName == "Accessory" then
+delete(t)
+end
+end
+end
+end
+end
+pickplayer(arg[2], _noaccessories)
+end
+function blockspam(msg)
+local arg = stringtotable(msg)
+function _blockspam(getplrs)
+for i, plr in pairs(getplrs) do
+game.RunService.Heartbeat:connect(function()
+if workspace:FindFirstChild(plr.Name) and plr.Character:FindFirstChild("HumanoidRootPart") then
+place(plr.Character.HumanoidRootPart.CFrame, game.ReplicatedStorage.GameItems.Colors.Green)
+end
+end)
+end
+end
+pickplayer(arg[2], _blockspam)
+end
+function removebase(msg)
+local arg = stringtotable(msg)
+function _removebase(getplrs)
+for i, plr in pairs(getplrs) do
+for i, child in pairs(workspace.Bases:GetChildren()) do
+if child.Owner.Value == plr.UserId then
+for i, block in pairs(child.Blocks:GetChildren()) do
+delete(block)
+wait()
+end
+end
+end
+end
+end
+pickplayer(arg[3], _removebase)
+end
+function thanossnap(msg)
+local arg = stringtotable(msg)
+function _thanossnap(getplrs)
+for i, plr in pairs(getplrs) do
+for i, t in pairs(plr.Character:GetChildren()) do
+delete(t)
+wait(0.1)
+end
+wait(0.1)
+delete(plr.Character)
+for i, b in pairs(plr:GetChildren()) do
+delete(b)
+wait(0.1)
+end
+wait(0.1)
+delete(plr)
+end
+end
+pickplayer(arg[2], _thanossnap)
+end
+function canbuild(msg)
+local arg = stringtotable(msg)
+function setvalue(getplrs)
+for i, v in pairs(getplrs) do
+for i, base in pairs(workspace.Bases:GetChildren()) do
+if base.Owner.Value == v.UserId then
+base.canbuild.Value = stringtobool(args[3])
+end
+end
+end
+end
+pickplayer(arg[2], setvalue)
+end
+function ban(msg)
+local arg = stringtotable(msg)
+function _ban(getplrs)
+for i, plr in pairs(getplrs) do
+local v = Instance.new("StringValue", game.Bannedplayers)
+v.Name = plr.Name
+end
+end
+pickplayer(arg[2], _ban)
+end
+game.RunService.RenderStepped:connect(function()
+for i, plr in pairs(all()) do
+for i, banned in pairs(game.Bannedplayers:GetChildren()) do
+if plr.Name == banned.Name then
+delete(plr)
+end
+end
+end
+end)
+function blockhead(msg)
+local arg = stringtotable(msg)
+function _blockhead(getplrs)
+for i,plr in pairs(getplrs) do
+if workspace:FindFirstChild(plr.Name) and plr.Character.Head:FindFirstChild("Mesh") then
+delete(plr.Character.Head.Mesh)
+end
+end
+end
+pickplayer(arg[2], _blockhead)
+end
+function noanim(msg)
+local arg = stringtotable(msg)
+function _noanim(getplrs)
+for i, plr in pairs(getplrs) do
+if workspace:FindFirstChild(plr.Name) and plr.Character.Humanoid:FindFirstChild("Animator") then
+delete(plr.Character.Humanoid.Animator)
+end
+end
+end
+pickplayer(arg[2], _noanim)
+end
+function nosurvival(msg)
+local arg = stringtotable(msg)
+function _nosurvival(getplrs)
+for i, plr in pairs(getplrs) do
+function delsurvivetag()
+if workspace:FindFirstChild(plr.Name) then
+if plr.Character:FindFirstChild("Survivor") then
+delete(plr.Character.Survivor)
+end
+plr.Character.ChildAdded:connect(function(c)
+if c.Name == "Survivor" then
+wait(0.2)
+c:Destroy()
+end
+end)
+end
+end
+delsurvivetag()
+plr.CharacterAdded:connect(function(chr)
+chr:WaitForChild("Humanoid")
+delsurvivetag()
+end)
+end
+end
+pickplayer(arg[2], _nosurvival)
+end
+function noface(msg)
+local arg = stringtotable(msg)
+function _noface(getplrs)
+for i, plr in pairs(getplrs) do
+if workspace:FindFirstChild(plr.Name) and plr.Character.Head:FindFirstChild("face") then
+delete(plr.Character.Head.face)
+end
+end
+end
+pickplayer(arg[2], _noface)
+end
+for i, plr in pairs(all()) do
+local loopkill = Instance.new("BoolValue", plr)
+loopkill.Value = false
+loopkill.Name = "loopkill"
+end
+plrs.PlayerAdded:connect(function(plr)
+local loopkill = Instance.new("BoolValue", plr)
+loopkill.Value = false
+loopkill.Name = "loopkill"
+end)
+for i, v in pairs(workspace.Bases:GetChildren()) do
+local buildval = Instance.new("BoolValue", v)
+buildval.Value = true
+buildval.Name = "canbuild"
+v.Blocks.ChildAdded:connect(function(block)
+wait(0.2)
+if v.canbuild.Value == false then
+delete(block)
+end
+end)
+end
+function loopkill(msg)
+local arg = stringtotable(msg)
+function _loopkill(getplrs)
+for i, v in pairs(getplrs) do
+v.loopkill.Value = true
+end
+end
+pickplayer(arg[2], _loopkill)
+end
+function unloopkill(msg)
+local arg = stringtotable(msg)
+function _unloopkill(getplrs)
+for i,v in pairs(getplrs) do
+v.loopkill.Value = false
+end
+end
+pickplayer(arg[2], _unloopkill)
+end
+game.RunService.Heartbeat:connect(function()
+for i,plr in pairs(all()) do
+if plr.loopkill.Value == true and plr.Character and plr.Character.Head:FindFirstChild("Neck") then
+delete(plr.Character.Head.Neck)
+end
+end
+end)
+local folder = Instance.new("Folder", game)
+folder.Name = "Bannedplayers"
+local Commands = [[
+
+Default Prefix = ;
+Commands:
+kick [plr]
+kill [plr]
+nobases
+clearws
+clear base [plr]
+delete products (Deletes the annoying things like the visible laser gun, doge and others)
+delete enemies
+zclick destroy (FE click destroy except its Z + Left Click)
+qclick spawn (Spawns green blocks where ever you want)
+xclick enemyspawn (Spawn additional enemies if enemies are on the map)
+end server
+cripple [plr]
+removelimbs [plr]
+removearms [plr]
+removelegs [plr]
+suffer [plr]
+removetools [plr]
+noenemies (Its like delete enemies except the enemies don't spawn back)
+nocages
+noclothing [plr]
+permpunish [plr] (because you can't unpunish someone sooo uh)
+oof [plr]
+noaccessories [plr]
+getiy (Loads Infinite Yield for client-sided commands)
+ooftime [num] (changes delay time when you use oof command on someone, is defaulted to 0.1)
+partbypart (deletes all parts of the workspace one at a time, beginning with the base blocks)
+removelighting
+enemyaura (Automatically deletes enemies when nearby)
+blockspam [plr]
+remove base [plr] (like clear base except it removes blocks one at a time [USE THIS ON YOURSELF IF YOU USED BLOCKSPAM OR ELSE YOU COULD BE KICKED (I guess roblox's anticheat fires if a remote event or something is doing too many things at once.)]
+thanossnap [plr]
+canbuild [plr] [true/false] (changes a players ability to add blocks to their base)
+ban [plr]
+blockhead [plr]
+noanim [plr]
+nosurvival [plr] (makes it so the affected player doesn't earn any survivals to the Survived leaderstat)
+noface [plr]
+killaura
+auravalue [num] (sets value for the killaura cmd, is defaulted to 20)
+antibot (attempts to remove bots from entering the game by auto kicking a player if their Survived value is 0)
+cmds (re-prints list of commands in case something happens in the dev log)
+unban [plr]
+getbannedplayers (prints list of all players you banned)
+loopkill [plr]
+unloopkill [plr]
+changeprefix [prefix]
+]]
+function getcmds()
+print(Commands)
+end
+lplr.Chatted:connect(function(msg)
+if msg:sub(1, (string.len(Prefix) - 1) + 6) == Prefix.."kick " then
+kick(msg)
+end
+if msg == Prefix.."nobases" then
+delete(workspace.Bases)
+end
+if msg == Prefix.."clearws" then
+for i, g in pairs(workspace:GetChildren()) do
+if not game.Players:GetPlayerFromCharacter(g) then
+delete(g)
+end
+end
+end
+if msg == Prefix.."delete enemies" then
+for i, enemy in pairs(workspace.Mobs:GetChildren()) do
+delete(enemy)
+end
+end
+if msg:sub(1, (string.len(Prefix) - 1) + 6) == Prefix.."kill " then
+kill(msg)
+end
+if msg:sub(1, (string.len(Prefix) - 1) + 12) == Prefix.."clear base " then
+clearbase(msg)
+end
+if msg == Prefix.."delete products" then
+for i, child in pairs(workspace:GetDescendants()) do
+if child.Name == "DevProducts" then
+delete(child)
+end
+end
+end
+if msg == Prefix.."zclick destroy" then
+mouse.Button1Down:connect(function()
+if not game.UserInputService:IsKeyDown(Enum.KeyCode.Z) then return end
+if not mouse.Hit then return end
+delete(mouse.Target)
+end)
+end
+if msg == Prefix.."qclick spawn" then
+mouse.Button1Down:connect(function()
+if not game.UserInputService:IsKeyDown(Enum.KeyCode.Q) then return end
+if not mouse.Hit then return end
+place(mouse.Hit, game.ReplicatedStorage.GameItems.Colors.Green)
+end)
+end
+if msg == Prefix.."end server" then
+for i, plr in pairs(all()) do
+delete(plr)
+end
+end
+if msg == Prefix.."xclick enemyspawn" then
+mouse.Button1Down:connect(function()
+if not game.UserInputService:IsKeyDown(Enum.KeyCode.X) then return end
+if not mouse.Hit then return end
+local enemy
+for i, mob in pairs(workspace.Mobs:GetChildren()) do
+if mob then
+enemy = mob
+end
+end
+if enemy then
+place(mouse.Hit, enemy)
+else
+game.StarterGui:SetCore("SendNotification", {
+Title = "Enemy Spawning";
+Text = "Wait for enemies to spawn.";
+})
+end
+end)
+end
+if msg:sub(1, (string.len(Prefix) - 1) + 9) == Prefix.."cripple " then
+cripple(msg)
+end
+if msg:sub(1, (string.len(Prefix) - 1) + 13) == Prefix.."removelimbs " then
+removelimbs(msg)
+end
+if msg:sub(1, (string.len(Prefix) - 1) + 12) == Prefix.."removearms " then
+removearms(msg)
+end
+if msg:sub(1, (string.len(Prefix) - 1) + 12) == Prefix.."removelegs " then
+removelegs(msg)
+end
+if msg:sub(1, (string.len(Prefix) - 1) + 12) == Prefix.."noclothing " then
+noclothing(msg)
+end
+if msg:sub(1, (string.len(Prefix) - 1) + 8) == Prefix.."suffer " then
+suffer(msg)
+end
+if msg:sub(1, (string.len(Prefix) - 1) + 13) == Prefix.."removetools " then
+removetools(msg)
+end
+if msg == Prefix.."noenemies" then
+delete(workspace.Mobs)
+end
+if msg == Prefix.."nocages" then
+for i, cage in pairs(workspace.Cages:GetChildren()) do
+for i, child in pairs(cage:GetChildren()) do
+if child.Name ~= "MobSpawn" then
+delete(child)
+end
+end
+end
+end
+if msg:sub(1, (string.len(Prefix) - 1) + 12) == Prefix.."permpunish " then
+permpunish(msg)
+end
+if msg:sub(1, (string.len(Prefix) - 1) + 5) == Prefix.."oof " then
+oof(msg)
+end
+if msg:sub(1, (string.len(Prefix) - 1) + 15) == Prefix.."noaccessories " then
+noaccessories(msg)
+end
+if msg == Prefix.."getiy" then
+loadstring(game:HttpGet(('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'),true))()
+end
+if msg:sub(1, (string.len(Prefix) - 1) + 9) == Prefix.."ooftime " then
+ooftime = tonumber(msg:sub(10))
+end
+if msg == Prefix.."partbypart" then
+for i, base in pairs(workspace.Bases:GetChildren()) do
+for i, block in pairs(base.Blocks:GetChildren()) do
+delete(block)
+wait()
+end
+end
+for i, b in pairs(workspace:GetDescendants()) do
+if b:IsA("BasePart") then
+delete(b)
+wait()
+end
+end
+end
+if msg == Prefix.."removelighting" then
+for i, v in pairs(game.Lighting:GetChildren()) do
+delete(v)
+end
+end
+if msg == Prefix.."enemyaura" then
+function delaura(child)
+game.RunService.RenderStepped:connect(function()
+local pos = (lplr.Character.HumanoidRootPart.Position - child.Position).Magnitude
+if pos < 6 then
+delete(child)
+end
+end)
+end
+for i, b in pairs(workspace.Mobs:GetChildren()) do
+for i, mob in pairs(b:GetChildren()) do
+if mob:IsA("BasePart") then
+delaura(mob)
+end
+end
+end
+workspace.Mobs.ChildAdded:connect(function(mob)
+mob:WaitForChild("Torso")
+for i, g in pairs(mob:GetChildren()) do
+if g:IsA("BasePart") then
+delaura(g)
+end
+end
+end)
+end
+if msg:sub(1, (string.len(Prefix) - 1) + 11) == Prefix.."blockspam " then
+blockspam(msg)
+end
+if msg:sub(1, (string.len(Prefix) - 1) + 13) == Prefix.."remove base " then
+removebase(msg)
+end
+if msg:sub(1, (string.len(Prefix) - 1) + 12) == Prefix.."thanossnap " then
+thanossnap(msg)
+end
+if msg:sub(1, (string.len(Prefix) - 1) + 10) == Prefix.."canbuild " then
+canbuild(msg)
+end
+if msg:sub(1, (string.len(Prefix) - 1) + 5) == Prefix.."ban " then
+ban(msg)
+end
+if msg:sub(1, (string.len(Prefix) - 1) + 11) == Prefix.."blockhead " then
+blockhead(msg)
+end
+if msg:sub(1, (string.len(Prefix) - 1) + 8) == Prefix.."noanim " then
+noanim(msg)
+end
+if msg:sub(1, (string.len(Prefix) - 1) + 12) == Prefix.."nosurvival " then
+nosurvival(msg)
+end
+if msg:sub(1, (string.len(Prefix) - 1) + 8) == Prefix.."noface " then
+noface(msg)
+end
+if msg == Prefix.."killaura" then
+function nearby(part)
+if (part.Position - lplr.Character.HumanoidRootPart.Position).Magnitude < aura then
+	delete(part)
+end
+end
+game.RunService.RenderStepped:connect(function()
+for i, b in pairs(workspace:GetChildren()) do
+local player = game.Players:GetPlayerFromCharacter(b)
+if player and player.Name ~= lplr.Name then
+for i, p in pairs(b:GetChildren()) do
+if p:IsA("BasePart") then
+nearby(p)
+end
+end
+end
+end
+end)
+end
+if msg:sub(1, (string.len(Prefix) - 1) + 11) == Prefix.."auravalue " then
+aura = tonumber(msg:sub(12))
+end
+if msg == Prefix.."antibot" then
+plrs.PlayerAdded:connect(function(plr)
+plr:WaitForChild("leaderstats")
+plr.leaderstats:WaitForChild("Survived")
+if plr.leaderstats.Survived.Value == 0 then
+delete(plr)
+end
+end)
+end
+if msg == Prefix.."cmds" then
+getcmds()
+end
+if msg:sub(1, (string.len(Prefix) - 1) + 7) == Prefix.."unban " then
+for i, v in pairs(game.Bannedplayers:GetChildren()) do
+if string.lower(v.Name):sub(1, string.len(msg:sub(8))) == string.lower(msg):sub(8) then
+v:Destroy()
+end
+end
+end
+if msg == Prefix.."unban all" then
+game.Bannedplayers:ClearAllChildren()
+end
+if msg == Prefix.."getbannedplayers" then
+print("--List of banned players--")
+for i,v in pairs(game.Bannedplayers:GetChildren()) do
+print(v.Name)
+end
+print("----")
+end
+if msg:sub(1, (string.len(Prefix) - 1) + 10) == Prefix.."loopkill " then
+loopkill(msg)
+end
+if msg:sub(1, (string.len(Prefix) - 1) + 12) == Prefix.."unloopkill " then
+unloopkill(msg)
+end
+if msg:sub(1, (string.len(Prefix) - 1) +14) == Prefix.."changeprefix " then
+if msg:sub(15,15) ~= "" and not msg:sub(15):find(" ") then
+Prefix = msg:sub(15)
+end
+end
+end)
+getcmds()
+game.StarterGui:SetCore("SendNotification", {
+Title = title;
+Text = "New prefixes can now be more than one character.";
+Duration = 10;
+})
