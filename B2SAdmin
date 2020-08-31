@@ -333,8 +333,8 @@ end
 end
 _G.nearby = function(plr)
     if lplr.Character and lplr.Character:FindFirstChild("HumanoidRootPart") then
-if (plr.Character.HumanoidRootPart.Position - lplr.Character.HumanoidRootPart.Position).Magnitude < aura and killaura then
-	delete(part)
+if (plr.Character.HumanoidRootPart.Position - lplr.Character.HumanoidRootPart.Position).Magnitude < aura and killaura and plr.Character:FindFirstChild("Neck") then
+	delete(plr.Character.Neck)
 end
 end
 end
@@ -521,7 +521,7 @@ function unloopkill(msg)
 local arg = stringtotable(msg)
 function _unloopkill(getplrs)
 for i,v in pairs(getplrs) do
-_G.Players[v.UserId].Loopkill = false
+_G._Players[v.UserId].Loopkill = false
 end
 end
 pickplayer(arg[2], _unloopkill)
