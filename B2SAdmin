@@ -1,11 +1,29 @@
+if not _G.B2SAdmin then
+_G.B2SAdmin = true
 local delet
 local ooftime = 0.1
 local plrs = game.Players
 local lplr = plrs.LocalPlayer
 local mouse = lplr:GetMouse()
+local killaura = false
+local mobaura = false
 local aura = 20
 local Prefix = ";"
-title = "Build to Survive Admin v5.8.3"
+_G._Players = {}
+function addargs(v)
+_G._Players[v.UserId] = {}
+_G._Players[v.UserId].Loopkill = false
+_G._Players[v.UserId].Banned = {false, v.Name}
+_G._Players[v.UserId].Canbuild = true
+_G._Players[v.UserId].Blockspam = false
+end
+for i,v in pairs(plrs:GetPlayers()) do
+addargs(v)
+end
+plrs.PlayerAdded:connect(function(v)
+addargs(v)
+end)
+title = "Build to Survive Admin v5.9"
 if game.ReplicatedStorage.PlayerEvents:FindFirstChild("e"..lplr.UserId) then
 delet = game.ReplicatedStorage.PlayerEvents["e"..lplr.UserId].DestroyItem
 else
@@ -18,7 +36,7 @@ print("The DestroyItem and PlaceItem remote events have not yet been added to th
 local folder = game.ReplicatedStorage.PlayerEvents:WaitForChild("e"..lplr.UserId)
 folder:WaitForChild("DestroyItem")
 folder:WaitForChild("PlaceItem")
-delet = game.ReplicatedStorage.PlayerEvents["e"..game.Players.LocalPlayer.UserId].DestroyItem
+delet = game.ReplicatedStorage.PlayerEvents["e"..lplr.UserId].DestroyItem
 end
 function delete(child)
 delet:FireServer(child)
@@ -285,18 +303,72 @@ end
 end
 pickplayer(arg[2], _noaccessories)
 end
+game.RunService.Heartbeat:connect(function()
+for i,v in pairs(_G._Players) do
+local _, p = unpack(v.Banned)
+if game.Players:FindFirstChild(p) then
+local plr = game.Players[p]
+if plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and v.Blockspam == true then
+place(plr.Character.HumanoidRootPart.CFrame, game.ReplicatedStorage.GameItems.Colors.Green)
+end
+end
+end
+for i, plr in pairs(all()) do
+local banned, name = unpack(_G._Players[plr.UserId].Banned)
+if banned then
+delete(plr)
+end
+if _G._Players[plr.UserId].Loopkill == true and plr.Character and lplr.Character:FindFirstChild("Head") and plr.Character.Head:FindFirstChild("Neck") then
+delete(plr.Character.Head.Neck)
+end
+end
+_G.delaura = function(child)
+if lplr.Character and lplr.Character:FindFirstChild("HumanoidRootPart") then
+local pos = (lplr.Character.HumanoidRootPart.Position - child.PrimaryPart.Position).Magnitude
+if pos < 6 and mobaura then
+delete(child)
+end
+end
+end
+_G.nearby = function(plr)
+    if lplr.Character and lplr.Character:FindFirstChild("HumanoidRootPart") then
+if (plr.Character.HumanoidRootPart.Position - lplr.Character.HumanoidRootPart.Position).Magnitude < aura and killaura then
+	delete(part)
+end
+end
+end
+end)
+repeat wait() until _G.delaura and _G.nearby
+for i, mob in pairs(workspace.Mobs:GetChildren()) do
+_G.delaura(mob)
+end
+workspace.Mobs.ChildAdded:connect(function(mob)
+mob:WaitForChild("HumanoidRootPart")
+_G.delaura(mob)
+end)
+for i, b in pairs(workspace:GetChildren()) do
+local player = game.Players:GetPlayerFromCharacter(b)
+if player and player.Name ~= lplr.Name and b:FindFirstChild("HumanoidRootPart") then
+_G.nearby(player)
+end
+end
 function blockspam(msg)
 local arg = stringtotable(msg)
 function _blockspam(getplrs)
 for i, plr in pairs(getplrs) do
-game.RunService.Heartbeat:connect(function()
-if plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
-place(plr.Character.HumanoidRootPart.CFrame, game.ReplicatedStorage.GameItems.Colors.Green)
-end
-end)
+_G._Players[plr.UserId].Blockspam = true
 end
 end
 pickplayer(arg[2], _blockspam)
+end
+function unblockspam(msg)
+local arg = stringtotable(msg)
+function _unblockspam(getplrs)
+for i, plr in pairs(getplrs) do
+_G._Players[plr.UserId].Blockspam = false
+end
+end
+pickplayer(arg[2], _unblockspam)
 end
 function removebase(msg)
 local arg = stringtotable(msg)
@@ -340,7 +412,7 @@ function setvalue(getplrs)
 for i, v in pairs(getplrs) do
 for i, base in pairs(workspace.Bases:GetChildren()) do
 if base.Owner.Value == v.UserId then
-base.canbuild.Value = stringtobool(args[3])
+_G._Players[base.Owner.Value].Canbuild = stringtobool(arg[3])
 end
 end
 end
@@ -351,21 +423,22 @@ function ban(msg)
 local arg = stringtotable(msg)
 function _ban(getplrs)
 for i, plr in pairs(getplrs) do
-local v = Instance.new("StringValue", game.Bannedplayers)
-v.Name = plr.Name
+local banned, plr = unpack(_G._Players[plr.UserId].Banned)
+banned = true
 end
 end
 pickplayer(arg[2], _ban)
 end
-game.RunService.RenderStepped:connect(function()
-for i, plr in pairs(all()) do
-for i, banned in pairs(game.Bannedplayers:GetChildren()) do
-if plr.Name == banned.Name then
-delete(plr)
+function unban(msg)
+local arg = stringtotable(msg)
+function _unban(getplrs)
+for i, plr in pairs(getplrs) do
+local banned, plr = unpack(_G._Players[plr.UserId].Banned)
+banned = false
 end
 end
+pickplayer(arg[2], _unban)
 end
-end)
 function blockhead(msg)
 local arg = stringtotable(msg)
 function _blockhead(getplrs)
@@ -425,23 +498,11 @@ end
 end
 pickplayer(arg[2], _noface)
 end
-for i, plr in pairs(all()) do
-local loopkill = Instance.new("BoolValue", plr)
-loopkill.Value = false
-loopkill.Name = "loopkill"
-end
-plrs.PlayerAdded:connect(function(plr)
-local loopkill = Instance.new("BoolValue", plr)
-loopkill.Value = false
-loopkill.Name = "loopkill"
-end)
 for i, v in pairs(workspace.Bases:GetChildren()) do
-local buildval = Instance.new("BoolValue", v)
-buildval.Value = true
-buildval.Name = "canbuild"
 v.Blocks.ChildAdded:connect(function(block)
 wait(0.2)
-if v.canbuild.Value == false then
+
+if _G._Players[v.Owner.Value] and _G._Players[v.Owner.Value].Canbuild == false then
 delete(block)
 end
 end)
@@ -450,7 +511,7 @@ function loopkill(msg)
 local arg = stringtotable(msg)
 function _loopkill(getplrs)
 for i, v in pairs(getplrs) do
-v.loopkill.Value = true
+_G._Players[v.UserId].Loopkill = true
 end
 end
 pickplayer(arg[2], _loopkill)
@@ -459,20 +520,11 @@ function unloopkill(msg)
 local arg = stringtotable(msg)
 function _unloopkill(getplrs)
 for i,v in pairs(getplrs) do
-v.loopkill.Value = false
+_G.Players[v.UserId].Loopkill = false
 end
 end
 pickplayer(arg[2], _unloopkill)
 end
-game.RunService.Heartbeat:connect(function()
-for i,plr in pairs(all()) do
-if plr.loopkill.Value == true and plr.Character and plr.Character.Head:FindFirstChild("Neck") then
-delete(plr.Character.Head.Neck)
-end
-end
-end)
-local folder = Instance.new("Folder", game)
-folder.Name = "Bannedplayers"
 local Commands = [[
 
 Default Prefix = ;
@@ -666,29 +718,7 @@ delete(v)
 end
 end
 if msg == Prefix.."enemyaura" then
-function delaura(child)
-game.RunService.RenderStepped:connect(function()
-local pos = (lplr.Character.HumanoidRootPart.Position - child.Position).Magnitude
-if pos < 6 then
-delete(child)
-end
-end)
-end
-for i, b in pairs(workspace.Mobs:GetChildren()) do
-for i, mob in pairs(b:GetChildren()) do
-if mob:IsA("BasePart") then
-delaura(mob)
-end
-end
-end
-workspace.Mobs.ChildAdded:connect(function(mob)
-mob:WaitForChild("Torso")
-for i, g in pairs(mob:GetChildren()) do
-if g:IsA("BasePart") then
-delaura(g)
-end
-end
-end)
+mobaura = true
 end
 if msg:sub(1, (prefixlength() - 1) + 11) == Prefix.."blockspam " then
 blockspam(msg)
@@ -718,23 +748,7 @@ if msg:sub(1, (prefixlength() - 1) + 8) == Prefix.."noface " then
 noface(msg)
 end
 if msg == Prefix.."killaura" then
-function nearby(part)
-if (part.Position - lplr.Character.HumanoidRootPart.Position).Magnitude < aura then
-	delete(part)
-end
-end
-game.RunService.RenderStepped:connect(function()
-for i, b in pairs(workspace:GetChildren()) do
-local player = game.Players:GetPlayerFromCharacter(b)
-if player and player.Name ~= lplr.Name then
-for i, p in pairs(b:GetChildren()) do
-if p:IsA("BasePart") then
-nearby(p)
-end
-end
-end
-end
-end)
+killaura = true
 end
 if msg:sub(1, (prefixlength() - 1) + 11) == Prefix.."auravalue " then
 aura = tonumber(msg:sub(11 + prefixlength()))
@@ -752,19 +766,15 @@ if msg == Prefix.."cmds" then
 getcmds()
 end
 if msg:sub(1, (prefixlength() - 1) + 7) == Prefix.."unban " then
-for i, v in pairs(game.Bannedplayers:GetChildren()) do
-if string.lower(v.Name):sub(1, string.len(msg:sub(7 + prefixlength()))) == string.lower(msg):sub(7 + prefixlength()) then
-v:Destroy()
-end
-end
-end
-if msg == Prefix.."unban all" then
-game.Bannedplayers:ClearAllChildren()
+unban(msg)
 end
 if msg == Prefix.."getbannedplayers" then
 print("--List of banned players--")
-for i,v in pairs(game.Bannedplayers:GetChildren()) do
+for i,v in pairs(_G._Players) do
+local isbanned, plrname = unpack(v.Banned)
+if isbanned then
 print(v.Name)
+end
 end
 print("----")
 end
@@ -779,10 +789,14 @@ if msg:sub(15,15) ~= "" and not msg:sub(14 + prefixlength()):find(" ") then
 Prefix = msg:sub(14 + prefixlength())
 end
 end
+if msg:sub(1, 12 + prefixlength()) == Prefix.."unblockspam " then
+unblockspam(msg)
+end
 end)
 getcmds()
 game.StarterGui:SetCore("SendNotification", {
 Title = title;
-Text = "Fixed the prefixchange command, however, new prefixes CANNOT HAVE ANY SPACES.";
+Text = "Added ;unblockspam.";
 Duration = 10;
 })
+end
