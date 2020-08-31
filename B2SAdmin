@@ -315,8 +315,7 @@ end
 end
 end
 for i, plr in pairs(all()) do
-local banned, name = unpack(_G._Players[plr.UserId].Banned)
-if banned then
+if _G._Players[plr.UserId].Banned[1] then
 delete(plr)
 end
 if _G._Players[plr.UserId].Loopkill == true and plr.Character and lplr.Character:FindFirstChild("Head") and plr.Character.Head:FindFirstChild("Neck") then
@@ -424,8 +423,7 @@ function ban(msg)
 local arg = stringtotable(msg)
 function _ban(getplrs)
 for i, plr in pairs(getplrs) do
-local banned, plr = unpack(_G._Players[plr.UserId].Banned)
-banned = true
+_G._Players[plr.UserId].Banned[1] = true
 end
 end
 pickplayer(arg[2], _ban)
@@ -434,8 +432,7 @@ function unban(msg)
 local arg = stringtotable(msg)
 function _unban(getplrs)
 for i, plr in pairs(getplrs) do
-local banned, plr = unpack(_G._Players[plr.UserId].Banned)
-banned = false
+_G._Players[plr.UserId].Banned[1] = false
 end
 end
 pickplayer(arg[2], _unban)
@@ -772,8 +769,7 @@ end
 if msg == Prefix.."getbannedplayers" then
 print("--List of banned players--")
 for i,v in pairs(_G._Players) do
-local isbanned, plrname = unpack(v.Banned)
-if isbanned then
+if _G._Players[plr.UserId].Banned[1] then
 print(v.Name)
 end
 end
