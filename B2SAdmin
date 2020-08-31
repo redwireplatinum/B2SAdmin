@@ -431,13 +431,12 @@ end
 pickplayer(arg[2], _ban)
 end
 function unban(msg)
-local arg = stringtotable(msg)
-function _unban(getplrs)
-for i, plr in pairs(getplrs) do
-_G._Players[plr.UserId].Banned[1] = false
+local arg = stringtotable(msg)[2]
+for i, plr in pairs(_G._Players) do
+if string.lower(plr.Banned[2]):sub(1, string.len(arg)) == string.lower(arg) then
+plr.Banned[1] = false
 end
 end
-pickplayer(arg[2], _unban)
 end
 function blockhead(msg)
 local arg = stringtotable(msg)
