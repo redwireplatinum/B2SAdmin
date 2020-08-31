@@ -433,7 +433,11 @@ end
 function unban(msg)
 local arg = stringtotable(msg)[2]
 for i, plr in pairs(_G._Players) do
+if arg ~= "all" then
 if string.lower(plr.Banned[2]):sub(1, string.len(arg)) == string.lower(arg) then
+plr.Banned[1] = false
+end
+else
 plr.Banned[1] = false
 end
 end
