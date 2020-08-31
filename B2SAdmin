@@ -21,7 +21,7 @@ for i,v in pairs(plrs:GetPlayers()) do
 addargs(v)
 end
 plrs.PlayerAdded:connect(function(v)
-if _G._Players[v.UserId] then
+if not _G._Players[v.UserId] then
 addargs(v)
 end
 end)
