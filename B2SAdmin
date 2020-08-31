@@ -24,7 +24,7 @@ plrs.PlayerAdded:connect(function(v)
 addargs(v)
 end)
 repeat wait() until _G._Players
-title = "Build to Survive Admin v5.9.1"
+title = "Build to Survive Admin v5.9"
 if game.ReplicatedStorage.PlayerEvents:FindFirstChild("e"..lplr.UserId) then
 delet = game.ReplicatedStorage.PlayerEvents["e"..lplr.UserId].DestroyItem
 else
@@ -573,6 +573,7 @@ getbannedplayers (prints list of all players you banned)
 loopkill [plr]
 unloopkill [plr]
 changeprefix [prefix]
+unblockspam [plr]
 ]]
 function getcmds()
 print(Commands)
@@ -793,7 +794,7 @@ end)
 getcmds()
 game.StarterGui:SetCore("SendNotification", {
 Title = title;
-Text = "Fixed loopkill and ban.";
+Text = "Added ;unblockspam.";
 Duration = 10;
 })
 end
