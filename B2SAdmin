@@ -23,6 +23,7 @@ end
 plrs.PlayerAdded:connect(function(v)
 addargs(v)
 end)
+repeat wait() until _G._Players
 title = "Build to Survive Admin v5.9"
 if game.ReplicatedStorage.PlayerEvents:FindFirstChild("e"..lplr.UserId) then
 delet = game.ReplicatedStorage.PlayerEvents["e"..lplr.UserId].DestroyItem
