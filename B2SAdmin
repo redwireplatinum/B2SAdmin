@@ -448,6 +448,10 @@ if arg ~= "all" then
 if string.lower(plr.Banned[2]):sub(1, string.len(arg)) == string.lower(arg) then
 plr.Banned[1] = false
 end
+elseif arg == "random" then
+local bannedplrs = {}
+if v.Banned[1] then table.insert(bannedplrs, v) end
+bannedplrs[math.random(1, #bannedplrs)].Banned[1] = false
 else
 plr.Banned[1] = false
 end
