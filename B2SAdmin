@@ -810,7 +810,7 @@ end)
 getcmds()
 game.StarterGui:SetCore("SendNotification", {
 Title = title;
-Text = "Fixed the aura command.";
+Text = "Fixed the aura commands.";
 Duration = 10;
 })
 end
