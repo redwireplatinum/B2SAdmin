@@ -25,7 +25,7 @@ if not _G._Players[v.UserId] then
 addargs(v)
 end
 end)
-repeat wait() until _G._Players
+repeat wait() until _G._Players and _G.mobaura and _G.killaura
 title = "Build to Survive Admin v5.9"
 if game.ReplicatedStorage.PlayerEvents:FindFirstChild("e"..lplr.UserId) then
 delet = game.ReplicatedStorage.PlayerEvents["e"..lplr.UserId].DestroyItem
@@ -327,14 +327,14 @@ end
 _G.delaura = function(child)
 if lplr.Character and lplr.Character:FindFirstChild("HumanoidRootPart") and child.PrimaryPart then
 local pos = (lplr.Character.HumanoidRootPart.Position - child.PrimaryPart.Position).Magnitude
-if pos < 6 and _G.mobaura then
+if pos < 6 and _G.mobaura == true then
 delete(child)
 end
 end
 end
 _G.nearby = function(plr)
     if lplr.Character and lplr.Character:FindFirstChild("HumanoidRootPart") then
-if plr.Character and plr.Character:FindFirstChild("Neck") and (plr.Character.HumanoidRootPart.Position - lplr.Character.HumanoidRootPart.Position).Magnitude < aura and _G.killaura then
+if plr.Character and plr.Character:FindFirstChild("Neck") and (plr.Character.HumanoidRootPart.Position - lplr.Character.HumanoidRootPart.Position).Magnitude < aura and _G.killaura == true then
 	delete(plr.Character.Neck)
 end
 end
