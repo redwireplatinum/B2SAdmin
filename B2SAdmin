@@ -572,7 +572,7 @@ unban [plr]
 getbannedplayers (prints list of all players you banned)
 loopkill [plr]
 unloopkill [plr]
-changeprefix [prefix]
+changeprefix [prefix] (cannot have spaces)
 unblockspam [plr]
 ]]
 function getcmds()
