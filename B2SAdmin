@@ -770,8 +770,8 @@ end
 if msg == Prefix.."getbannedplayers" then
 print("--List of banned players--")
 for i,v in pairs(_G._Players) do
-if _G._Players[plr.UserId].Banned[1] then
-print(_G._Players[plr.UserId].Banned[2])
+if v.Banned[1] then
+print(v.Banned[2])
 end
 end
 print("----")
