@@ -589,6 +589,8 @@ loopkill [plr]
 unloopkill [plr]
 changeprefix [prefix] (cannot have spaces)
 unblockspam [plr]
+unkillaura
+unenemyaura
 ]]
 function getcmds()
 print(Commands)
