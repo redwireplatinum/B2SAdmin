@@ -27,7 +27,7 @@ addargs(v)
 end
 end)
 repeat wait() until _G._Players
-title = "Build to Survive Admin v5.9"
+title = "Build to Survive Admin v5.9.1"
 if game.ReplicatedStorage.PlayerEvents:FindFirstChild("e"..lplr.UserId) then
 delet = game.ReplicatedStorage.PlayerEvents["e"..lplr.UserId].DestroyItem
 else
@@ -445,16 +445,16 @@ end
 function unban(msg)
 local arg = stringtotable(msg)[2]
 for i, plr in pairs(_G._Players) do
-if arg ~= "all" then
+if arg == "all" then
+plr.Banned = false
+elseif arg == "random" then
+local bannedplrs = {}
+if plr.Banned == true then table.insert(bannedplrs, plr) end
+bannedplrs[math.random(1, #bannedplrs)].Banned = false
+else
 if string.lower(plr.Username):sub(1, string.len(arg)) == string.lower(arg) then
 plr.Banned = false
 end
-elseif arg == "random" then
-local bannedplrs = {}
-if v.Banned == true then table.insert(bannedplrs, v) end
-bannedplrs[math.random(1, #bannedplrs)].Banned = false
-else
-plr.Banned = false
 end
 end
 end
@@ -815,7 +815,7 @@ end)
 getcmds()
 game.StarterGui:SetCore("SendNotification", {
 Title = title;
-Text = "Fixed the aura commands.";
+Text = "Fixed ';unban random'.";
 Duration = 10;
 })
 end
