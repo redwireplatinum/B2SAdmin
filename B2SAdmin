@@ -39,7 +39,7 @@ Title = title;
 Text = "Admin is currently loading, check the developer log for more info.";
 Duration = 10;
 })
-print("The DestroyItem and PlaceItem remote events have not yet been added to the game.\n Sometimes servers fucking suck and will take a bit to add it,\nbe patient and the admin will load when the remote events are in the game.")
+print("The DestroyItem and PlaceItem remote events have not yet been added to the game.\n Sometimes servers fucking suck and will take a bit to add it,\nbe patient and the admin will load when the remote events are in the game.\n(Note: this will NOT load if the floor has been deleted and you keep dying for whatever reason.)")
 local folder = game.ReplicatedStorage.PlayerEvents:WaitForChild("e"..lplr.UserId)
 folder:WaitForChild("DestroyItem")
 folder:WaitForChild("PlaceItem")
