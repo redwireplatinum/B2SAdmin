@@ -4,29 +4,32 @@ local delet
 local ooftime = 0.1
 local aura = 20
 local plrs = game.Players
+function all()
+return plrs:GetPlayers()
+end
 local lplr = plrs.LocalPlayer
 local mouse = lplr:GetMouse()
 _G.killaura = false
 _G.mobaura = false
 local Prefix = ";"
-_G._Players = {}
+_G.Players = {}
 function addargs(v)
-_G._Players[v.UserId] = {}
-_G._Players[v.UserId].Username = v.Name
-_G._Players[v.UserId].Loopkill = false
-_G._Players[v.UserId].Banned = false
-_G._Players[v.UserId].Canbuild = true
-_G._Players[v.UserId].Blockspam = false
+_G.Players[v.UserId] = {}
+_G.Players[v.UserId].Username = v.Name
+_G.Players[v.UserId].Loopkill = false
+_G.Players[v.UserId].Banned = false
+_G.Players[v.UserId].Canbuild = true
+_G.Players[v.UserId].Blockspam = false
 end
-for i,v in pairs(plrs:GetPlayers()) do
+for i,v in pairs(all()) do
 addargs(v)
 end
 plrs.PlayerAdded:connect(function(v)
-if not _G._Players[v.UserId] then
+if not _G.Players[v.UserId] then
 addargs(v)
 end
 end)
-repeat wait() until _G._Players
+repeat wait() until _G.Players
 title = "Build to Survive Admin v5.9.1"
 if game.ReplicatedStorage.PlayerEvents:FindFirstChild("e"..lplr.UserId) then
 delet = game.ReplicatedStorage.PlayerEvents["e"..lplr.UserId].DestroyItem
@@ -81,7 +84,7 @@ end
 function randomplr()
 local t = {}
 local t2 = {}
-for i, plr in pairs(plrs:GetPlayers()) do
+for i, plr in pairs(all()) do
 if plr.Name ~= lplr.Name then
 table.insert(t, plr)
 end
@@ -92,7 +95,7 @@ end
 function specplr(st)
 local idk
 local t = {}
-for i, plr in pairs(plrs:GetPlayers()) do
+for i, plr in pairs(all()) do
 if string.lower(plr.Name):sub(1, string.len(st)) == string.lower(st) then
 idk = plr
 end
@@ -102,7 +105,7 @@ return t
 end
 function others()
 local t = {}
-for i, plr in pairs(plrs:GetPlayers()) do
+for i, plr in pairs(all()) do
 if plr.Name ~= lplr.Name then
 table.insert(t, plr)
 end
@@ -113,9 +116,6 @@ function me()
 local t = {}
 table.insert(t, lplr)
 return t
-end
-function all()
-return plrs:GetPlayers()
 end
 function pickplayer(str, func)
 if str == "others" then
@@ -308,20 +308,14 @@ end
 pickplayer(arg[2], _noaccessories)
 end
 game.RunService.Heartbeat:connect(function()
-for i,v in pairs(_G._Players) do
-local p = v.Username
-if game.Players:FindFirstChild(p) then
-local plr = game.Players[p]
-if plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and v.Blockspam == true then
+for i, plr in pairs(all()) do
+if plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and _G.Players[plr.UserId].Blockspam == true then
 place(plr.Character.HumanoidRootPart.CFrame, game.ReplicatedStorage.GameItems.Colors.Green)
 end
-end
-end
-for i, plr in pairs(all()) do
-if _G._Players[plr.UserId].Banned == true then
+if _G.Players[plr.UserId].Banned == true then
 delete(plr)
 end
-if _G._Players[plr.UserId].Loopkill == true and plr.Character and lplr.Character:FindFirstChild("Head") and plr.Character.Head:FindFirstChild("Neck") then
+if _G.Players[plr.UserId].Loopkill == true and plr.Character and lplr.Character:FindFirstChild("Head") and plr.Character.Head:FindFirstChild("Neck") then
 delete(plr.Character.Head.Neck)
 end
 end
@@ -359,7 +353,7 @@ c.CharacterAdded:connect(function(chr)
 _G.plraura(chr)
 end)
 end
-for i, player in pairs(plrs:GetPlayers()) do
+for i, player in pairs(all()) do
 _G.plraura(player.Character)
 ded(player)
 end
@@ -370,7 +364,7 @@ function blockspam(msg)
 local arg = stringtotable(msg)
 function _blockspam(getplrs)
 for i, plr in pairs(getplrs) do
-_G._Players[plr.UserId].Blockspam = true
+_G.Players[plr.UserId].Blockspam = true
 end
 end
 pickplayer(arg[2], _blockspam)
@@ -379,7 +373,7 @@ function unblockspam(msg)
 local arg = stringtotable(msg)
 function _unblockspam(getplrs)
 for i, plr in pairs(getplrs) do
-_G._Players[plr.UserId].Blockspam = false
+_G.Players[plr.UserId].Blockspam = false
 end
 end
 pickplayer(arg[2], _unblockspam)
@@ -426,7 +420,7 @@ function setvalue(getplrs)
 for i, v in pairs(getplrs) do
 for i, base in pairs(workspace.Bases:GetChildren()) do
 if base.Owner.Value == v.UserId then
-_G._Players[base.Owner.Value].Canbuild = stringtobool(arg[3])
+_G.Players[base.Owner.Value].Canbuild = stringtobool(arg[3])
 end
 end
 end
@@ -437,14 +431,14 @@ function ban(msg)
 local arg = stringtotable(msg)
 function _ban(getplrs)
 for i, plr in pairs(getplrs) do
-_G._Players[plr.UserId].Banned = true
+_G.Players[plr.UserId].Banned = true
 end
 end
 pickplayer(arg[2], _ban)
 end
 function unban(msg)
 local arg = stringtotable(msg)[2]
-for i, plr in pairs(_G._Players) do
+for i, plr in pairs(_G.Players) do
 if arg == "all" then
 plr.Banned = false
 elseif arg == "random" then
@@ -521,7 +515,7 @@ for i, v in pairs(workspace.Bases:GetChildren()) do
 v.Blocks.ChildAdded:connect(function(block)
 wait(0.2)
 
-if _G._Players[v.Owner.Value] and _G._Players[v.Owner.Value].Canbuild == false then
+if _G.Players[v.Owner.Value] and _G.Players[v.Owner.Value].Canbuild == false then
 delete(block)
 end
 end)
@@ -530,7 +524,7 @@ function loopkill(msg)
 local arg = stringtotable(msg)
 function _loopkill(getplrs)
 for i, v in pairs(getplrs) do
-_G._Players[v.UserId].Loopkill = true
+_G.Players[v.UserId].Loopkill = true
 end
 end
 pickplayer(arg[2], _loopkill)
@@ -539,7 +533,7 @@ function unloopkill(msg)
 local arg = stringtotable(msg)
 function _unloopkill(getplrs)
 for i,v in pairs(getplrs) do
-_G._Players[v.UserId].Loopkill = false
+_G.Players[v.UserId].Loopkill = false
 end
 end
 pickplayer(arg[2], _unloopkill)
@@ -790,7 +784,7 @@ unban(msg)
 end
 if msg == Prefix.."getbannedplayers" then
 print("--List of banned players--")
-for i,v in pairs(_G._Players) do
+for i,v in pairs(_G.Players) do
 if v.Banned == true then
 print(v.Username)
 end
