@@ -30,7 +30,7 @@ addargs(v)
 end
 end)
 repeat wait() until _G.Players
-title = "Build to Survive Admin v5.9.1"
+title = "Build to Survive Admin v5.9.3"
 if game.ReplicatedStorage.PlayerEvents:FindFirstChild("e"..lplr.UserId) then
 delet = game.ReplicatedStorage.PlayerEvents["e"..lplr.UserId].DestroyItem
 else
@@ -805,11 +805,17 @@ end
 if msg:sub(1, 12 + prefixlength()) == Prefix.."unblockspam " then
 unblockspam(msg)
 end
+if msg == Prefix.."unenemyaura" then
+_G.mobaura = false
+end
+if msg == Prefix.."unkillaura" then
+_G.killaura = false
+end
 end)
 getcmds()
 game.StarterGui:SetCore("SendNotification", {
 Title = title;
-Text = "Fixed ';unban random'.";
+Text = "Added unenemyaura and unkillaura.";
 Duration = 10;
 })
 end
