@@ -12,8 +12,9 @@ local Prefix = ";"
 _G._Players = {}
 function addargs(v)
 _G._Players[v.UserId] = {}
+_G._Players[v.UserId].Username = v.Name
 _G._Players[v.UserId].Loopkill = false
-_G._Players[v.UserId].Banned = {false, v.Name}
+_G._Players[v.UserId].Banned = false
 _G._Players[v.UserId].Canbuild = true
 _G._Players[v.UserId].Blockspam = false
 end
@@ -308,7 +309,7 @@ pickplayer(arg[2], _noaccessories)
 end
 game.RunService.Heartbeat:connect(function()
 for i,v in pairs(_G._Players) do
-local _, p = unpack(v.Banned)
+local p = v.Username
 if game.Players:FindFirstChild(p) then
 local plr = game.Players[p]
 if plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and v.Blockspam == true then
@@ -317,7 +318,7 @@ end
 end
 end
 for i, plr in pairs(all()) do
-if _G._Players[plr.UserId].Banned[1] then
+if _G._Players[plr.UserId].Banned == true then
 delete(plr)
 end
 if _G._Players[plr.UserId].Loopkill == true and plr.Character and lplr.Character:FindFirstChild("Head") and plr.Character.Head:FindFirstChild("Neck") then
@@ -436,7 +437,7 @@ function ban(msg)
 local arg = stringtotable(msg)
 function _ban(getplrs)
 for i, plr in pairs(getplrs) do
-_G._Players[plr.UserId].Banned[1] = true
+_G._Players[plr.UserId].Banned = true
 end
 end
 pickplayer(arg[2], _ban)
@@ -445,15 +446,15 @@ function unban(msg)
 local arg = stringtotable(msg)[2]
 for i, plr in pairs(_G._Players) do
 if arg ~= "all" then
-if string.lower(plr.Banned[2]):sub(1, string.len(arg)) == string.lower(arg) then
-plr.Banned[1] = false
+if string.lower(plr.Username):sub(1, string.len(arg)) == string.lower(arg) then
+plr.Banned = false
 end
 elseif arg == "random" then
 local bannedplrs = {}
-if v.Banned[1] then table.insert(bannedplrs, v) end
-bannedplrs[math.random(1, #bannedplrs)].Banned[1] = false
+if v.Banned then table.insert(bannedplrs, v) end
+bannedplrs[math.random(1, #bannedplrs)].Banned = false
 else
-plr.Banned[1] = false
+plr.Banned = false
 end
 end
 end
@@ -790,8 +791,8 @@ end
 if msg == Prefix.."getbannedplayers" then
 print("--List of banned players--")
 for i,v in pairs(_G._Players) do
-if v.Banned[1] then
-print(v.Banned[2])
+if v.Banned == true then
+print(v.Username)
 end
 end
 print("----")
