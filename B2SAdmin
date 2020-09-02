@@ -451,7 +451,7 @@ plr.Banned = false
 end
 elseif arg == "random" then
 local bannedplrs = {}
-if v.Banned then table.insert(bannedplrs, v) end
+if v.Banned == true then table.insert(bannedplrs, v) end
 bannedplrs[math.random(1, #bannedplrs)].Banned = false
 else
 plr.Banned = false
