@@ -88,62 +88,45 @@ end
 function place(cframe, child)
 delet.Parent.PlaceItem:FireServer(cframe, child)
 end
-function randomplr()
-local t = {}
-local t2 = {}
+function pickplayer(str, func)
+local playertable = {}
+if str == "others" then
 for i, plr in pairs(all()) do
 if plr.Name ~= lplr.Name then
-table.insert(t, plr)
+table.insert(playertable, plr)
 end
 end
-if #t ~= 0 then
-table.insert(t2, t[math.random(1, #t)]) 
-return t2
+elseif str == "all" then
+for i, plr in pairs(all()) do
+table.insert(playertable, plr)
+end
+elseif str == "random" then
+for i, plr in pairs(all()) do
+if plr.Name ~= lplr.Name then
+table.insert(playertable, plr)
+end
+end
+if #playertable ~= 0 then
+local randomplr = playertable[math.random(1, #playertable)]
+playertable = {}
+table.insert(playertable, randomplr)
 else
-return t2
+playertable = {}
 end
-end
-function specplr(st)
-local idk
-local t = {}
-for i, plr in pairs(all()) do
-if string.lower(plr.Name):sub(1, string.len(st)) == string.lower(st) then
-idk = plr
-end
-end
-table.insert(t, idk)
-return t
-end
-function others()
-local t = {}
-for i, plr in pairs(all()) do
-if plr.Name ~= lplr.Name then
-table.insert(t, plr)
-end
-end
-return t
-end
-function me()
-local t = {}
+elseif str == "me" then
 for i, plr in pairs(all()) do
 if plr.Name == lplr.Name then
-table.insert(t, plr)
+table.insert(playertable, plr)
 end
 end
-return t
-end
-function pickplayer(str, func)
-if str == "others" then
-func(others())
-elseif str == "all" then
-func(all())
-elseif str == "random" then
-func(randomplr())
-elseif str == "me" then
-func(me())
 else
-func(specplr(str))
+for i, plr in pairs(all()) do
+if string.lower(plr.Name):sub(1, string.len(str)) == string.lower(str) then
+table.insert(playertable, plr)
 end
+end
+end
+func(playertable)
 end
 function pickplayerv2(str, func, Vartable)
 local t = {}
