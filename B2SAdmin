@@ -96,8 +96,12 @@ if plr.Name ~= lplr.Name then
 table.insert(t, plr)
 end
 end
+if #t ~= 0 then
 table.insert(t2, t[math.random(1, #t)]) 
 return t2
+else
+return t2
+end
 end
 function specplr(st)
 local idk
@@ -705,7 +709,7 @@ place(mouse.Hit, game.ReplicatedStorage.GameItems.Colors.Green)
 end)
 end
 if msg == Prefix.."end server" then
-for i, plr in pairs(all()) do
+for i, plr in pairs(plrs:GetPlayers()) do
 delete(plr)
 end
 end
