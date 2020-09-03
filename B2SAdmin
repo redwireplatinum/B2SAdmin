@@ -4,9 +4,6 @@ local delet
 local ooftime = 0.1
 local aura = 20
 local plrs = game.Players
-function all()
-return plrs:GetPlayers()
-end
 local lplr = plrs.LocalPlayer
 local mouse = lplr:GetMouse()
 _G.killaura = false
@@ -20,8 +17,10 @@ _G.Players[v.UserId].Loopkill = false
 _G.Players[v.UserId].Banned = false
 _G.Players[v.UserId].Canbuild = true
 _G.Players[v.UserId].Blockspam = false
+_G.Players[v.UserId].Ignore = false
 end
-for i,v in pairs(all()) do
+repeat wait() until _G.Players
+for i,v in pairs(plrs:GetPlayers()) do
 addargs(v)
 end
 plrs.PlayerAdded:connect(function(v)
@@ -29,8 +28,16 @@ if not _G.Players[v.UserId] then
 addargs(v)
 end
 end)
-repeat wait() until _G.Players
-title = "Build to Survive Admin v5.9.3"
+function all()
+local playertable = {}
+for i,v in pairs(plrs:GetPlayers()) do
+if _G.Players[v.UserId].Ignore == false then
+table.insert(playertable, v)
+end
+end
+return playertable
+end
+title = "Build to Survive Admin v6"
 if game.ReplicatedStorage.PlayerEvents:FindFirstChild("e"..lplr.UserId) then
 delet = game.ReplicatedStorage.PlayerEvents["e"..lplr.UserId].DestroyItem
 else
@@ -54,7 +61,7 @@ if str == "true" then
 elseif str == "false" then
     return false
 else
-    return str
+    return false
 end
 end
 function prefixlength()
@@ -114,7 +121,11 @@ return t
 end
 function me()
 local t = {}
-table.insert(t, lplr)
+for i, plr in pairs(all()) do
+if plr.Name == lplr.Name then
+table.insert(t, plr)
+end
+end
 return t
 end
 function pickplayer(str, func)
@@ -129,6 +140,46 @@ func(me())
 else
 func(specplr(str))
 end
+end
+function pickplayerv2(str, func, Vartable)
+local t = {}
+if str == "others" then
+for i,v in pairs(_G.Players) do
+if v.Username ~= lplr.Name then 
+table.insert(t, v)
+end
+end
+elseif str == "random" then
+local var, bool = unpack(Vartable)
+for i,v in pairs(_G.Players) do
+if v.Username ~= lplr.Name and v[var] == bool then 
+table.insert(t, v)
+end
+end
+local randomplrv2 = t[math.random(1, #t)]
+for i,v in pairs(t) do
+if v ~= randomplrv2 then
+table.remove(t, v)
+end
+end
+elseif str == "all" then
+for i,v in pairs(_G.Players) do
+table.insert(t, v)
+end
+elseif str == "me" then
+for i,v in pairs(_G.Players) do
+if v.Username == lplr.Name then 
+table.insert(t, v)
+end
+end
+else
+for i,v in pairs(_G.Players) do
+if string.lower(v.Username):sub(1, string.len(str)) == string.lower(str) then
+table.insert(t, v)
+end
+end
+end
+func(t)
 end
 function kill(msg)
 local arg = stringtotable(msg)
@@ -438,19 +489,12 @@ pickplayer(arg[2], _ban)
 end
 function unban(msg)
 local arg = stringtotable(msg)[2]
-for i, plr in pairs(_G.Players) do
-if arg == "all" then
-plr.Banned = false
-elseif arg == "random" then
-local bannedplrs = {}
-if plr.Banned == true then table.insert(bannedplrs, plr) end
-bannedplrs[math.random(1, #bannedplrs)].Banned = false
-else
-if string.lower(plr.Username):sub(1, string.len(arg)) == string.lower(arg) then
+function _unban(getplrs)
+for i, plr in pairs(getplrs) do
 plr.Banned = false
 end
 end
-end
+pickplayerv2(arg, _unban, {"Banned", true})
 end
 function blockhead(msg)
 local arg = stringtotable(msg)
@@ -514,7 +558,6 @@ end
 for i, v in pairs(workspace.Bases:GetChildren()) do
 v.Blocks.ChildAdded:connect(function(block)
 wait(0.2)
-
 if _G.Players[v.Owner.Value] and _G.Players[v.Owner.Value].Canbuild == false then
 delete(block)
 end
@@ -537,6 +580,24 @@ _G.Players[v.UserId].Loopkill = false
 end
 end
 pickplayer(arg[2], _unloopkill)
+end
+function ignoreplr(msg)
+local plrtoignore = stringtotable(msg)[2]
+function _ignoreplr(getplrs)
+for i,v in pairs(getplrs) do
+_G.Players[v.UserId].Ignore = true
+end
+end
+pickplayer(plrtoignore, _ignoreplr)
+end
+function unignoreplr(msg)
+local arg = stringtotable(msg)[2]
+function _unignoreplr(getplrs)
+for i, plr in pairs(getplrs) do
+plr.Ignore = false
+end
+end
+pickplayerv2(arg, _unignoreplr, {"Ignore", true})
 end
 local Commands = [[
 
@@ -591,6 +652,8 @@ changeprefix [prefix] (cannot have spaces)
 unblockspam [plr]
 unkillaura
 unenemyaura
+ignoreplr [plr] (Excludes certain players COMPLETELY when using player commands)
+unignoreplr [plr]
 ]]
 function getcmds()
 print(Commands)
@@ -813,11 +876,17 @@ end
 if msg == Prefix.."unkillaura" then
 _G.killaura = false
 end
+if msg:sub(1, 9 + prefixlength()) == Prefix.."ignoreplr" then
+ignoreplr(msg)
+end
+if msg:sub(1, 11 + prefixlength()) == Prefix.."unignoreplr" then
+unignoreplr(msg)
+end
 end)
 getcmds()
 game.StarterGui:SetCore("SendNotification", {
 Title = title;
-Text = "Added unenemyaura and unkillaura.";
+Text = "Added ;ignoreplr and ;unignoreplr.";
 Duration = 10;
 })
 end
