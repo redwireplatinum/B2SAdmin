@@ -37,7 +37,7 @@ end
 end
 return playertable
 end
-title = "Build to Survive Admin v6"
+title = "Build to Survive Admin v6.0.1"
 if game.ReplicatedStorage.PlayerEvents:FindFirstChild("e"..lplr.UserId) then
 delet = game.ReplicatedStorage.PlayerEvents["e"..lplr.UserId].DestroyItem
 else
@@ -315,6 +315,7 @@ function oof(msg)
 local arg = stringtotable(msg)
 function _oof(getplrs)
 for i, plr in pairs(getplrs) do
+coroutine.resume(coroutine.create(function()
 if plr.Character then
 for i, t in pairs(plr.Character:GetChildren()) do
 if t.ClassName ~= "Humanoid" then
@@ -323,6 +324,7 @@ wait(ooftime)
 end
 end
 end
+end))
 end
 end
 pickplayer(arg[2], _oof)
@@ -417,6 +419,7 @@ function removebase(msg)
 local arg = stringtotable(msg)
 function _removebase(getplrs)
 for i, plr in pairs(getplrs) do
+coroutine.resume(coroutine.create(function()
 for i, child in pairs(workspace.Bases:GetChildren()) do
 if child.Owner.Value == plr.UserId then
 for i, block in pairs(child.Blocks:GetChildren()) do
@@ -425,6 +428,7 @@ wait()
 end
 end
 end
+end))
 end
 end
 pickplayer(arg[3], _removebase)
@@ -433,6 +437,7 @@ function thanossnap(msg)
 local arg = stringtotable(msg)
 function _thanossnap(getplrs)
 for i, plr in pairs(getplrs) do
+coroutine.resume(coroutine.create(function()
 for i, t in pairs(plr.Character:GetChildren()) do
 delete(t)
 wait(0.1)
@@ -445,6 +450,7 @@ wait(0.1)
 end
 wait(0.1)
 delete(plr)
+end))
 end
 end
 pickplayer(arg[2], _thanossnap)
@@ -762,10 +768,12 @@ if msg:sub(1, (prefixlength() - 1) + 9) == Prefix.."ooftime " then
 ooftime = tonumber(msg:sub(9 + prefixlength()))
 end
 if msg == Prefix.."partbypart" then
+if workspace:FindFirstChild("Bases") then
 for i, base in pairs(workspace.Bases:GetChildren()) do
 for i, block in pairs(base.Blocks:GetChildren()) do
 delete(block)
 wait()
+end
 end
 end
 for i, b in pairs(workspace:GetDescendants()) do
@@ -870,7 +878,7 @@ end)
 getcmds()
 game.StarterGui:SetCore("SendNotification", {
 Title = title;
-Text = "Added ;ignoreplr and ;unignoreplr.";
+Text = "Improved oof, removebase and thanossnap (now goes through all players at once, instead of 1 by 1).";
 Duration = 10;
 })
 end
