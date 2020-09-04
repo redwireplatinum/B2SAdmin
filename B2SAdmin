@@ -159,9 +159,6 @@ chr.Humanoid.Health = 0
 end
 end)
 end
-chr.Humanoid.Died:connect(function()
-deselect()
-end)
 end
 end)
 m.Button1Down:connect(function()
