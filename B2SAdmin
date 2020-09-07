@@ -829,6 +829,7 @@ plrs.PlayerAdded:connect(function(plr)
 plr:WaitForChild("leaderstats")
 plr.leaderstats:WaitForChild("Survived")
 if plr.leaderstats.Survived.Value == 0 and plr.AccountAge < 30 then
+wait(0.2)
 delete(plr)
 end
 end)
