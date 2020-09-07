@@ -770,10 +770,12 @@ end
 if msg == Prefix.."partbypart" then
 if workspace:FindFirstChild("Bases") then
 for i, base in pairs(workspace.Bases:GetChildren()) do
+coroutine.resume(coroutine.create(function()
 for i, block in pairs(base.Blocks:GetChildren()) do
 delete(block)
 wait()
 end
+end))
 end
 end
 for i, b in pairs(workspace:GetDescendants()) do
