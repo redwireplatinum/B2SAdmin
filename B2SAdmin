@@ -67,7 +67,7 @@ end
 function prefixlength()
 return string.len(Prefix)
 end
-function stringtotable(str)
+function repack(str)
 local t = {}
 local arg = ""
 str = str.." "
@@ -166,7 +166,7 @@ end
 func(t)
 end
 function kill(msg)
-local arg = stringtotable(msg)
+local arg = repack(msg)
 function _kill(getplrs)
 for i,plr in pairs(getplrs) do
 if plr.Character and plr.Character.Head:FindFirstChild("Neck") then
@@ -177,7 +177,7 @@ end
 pickplayer(arg[2], _kill)
 end
 function kick(msg)
-local arg = stringtotable(msg)
+local arg = repack(msg)
 function _kick(getplrs)
 for i,plr in pairs(getplrs) do
 delete(plr)
@@ -186,7 +186,7 @@ end
 pickplayer(arg[2], _kick)
 end
 function clearbase(msg)
-local arg = stringtotable(msg)
+local arg = repack(msg)
 function _clearbase(getplrs)
 for i, plr in pairs(getplrs) do
 for i, child in pairs(workspace.Bases:GetChildren()) do
@@ -201,7 +201,7 @@ end
 pickplayer(arg[3], _clearbase)
 end
 function cripple(msg)
-local arg = stringtotable(msg)
+local arg = repack(msg)
 function _cripple(getplrs)
 for i, plr in pairs(getplrs) do
 if plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
@@ -212,7 +212,7 @@ end
 pickplayer(arg[2], _cripple)
 end
 function removelimbs(msg)
-local arg = stringtotable(msg)
+local arg = repack(msg)
 function _removelimbs(getplrs)
 for i, plr in pairs(getplrs) do
 if plr.Character then
@@ -227,7 +227,7 @@ end
 pickplayer(arg[2], _removelimbs)
 end
 function removearms(msg)
-local arg = stringtotable(msg)
+local arg = repack(msg)
 function _removearms(getplrs)
 for i, plr in pairs(getplrs) do
 if plr.Character then
@@ -242,7 +242,7 @@ end
 pickplayer(arg[2], _removearms)
 end
 function removelegs(msg)
-local arg = stringtotable(msg)
+local arg = repack(msg)
 function _removelegs(getplrs)
 for i, plr in pairs(getplrs) do
 if plr.Character then
@@ -257,7 +257,7 @@ end
 pickplayer(arg[2], _removelegs)
 end
 function noclothing(msg)
-local arg = stringtotable(msg)
+local arg = repack(msg)
 function _noclothing(getplrs)
 for i, plr in pairs(getplrs) do
 if plr.Character:FindFirstChild("Shirt") then
@@ -274,7 +274,7 @@ end
 pickplayer(arg[2], _noclothing)
 end
 function suffer(msg)
-local arg = stringtotable(msg)
+local arg = repack(msg)
 function _suffer(getplrs)
 for i, plr in pairs(getplrs) do
 if plr.Character and plr.Character:FindFirstChild("Humanoid") then
@@ -285,7 +285,7 @@ end
 pickplayer(arg[2], _suffer)
 end
 function removetools(msg)
-local arg = stringtotable(msg)
+local arg = repack(msg)
 function _removetools(getplrs)
 for i, plr in pairs(getplrs) do
 for i, b in pairs(plr.Backpack:GetChildren()) do
@@ -301,7 +301,7 @@ end
 pickplayer(arg[2], _removetools)
 end
 function permpunish(msg)
-local arg = stringtotable(msg)
+local arg = repack(msg)
 function _permpunish(getplrs)
 for i, plr in pairs(getplrs) do
 if plr.Character then
@@ -312,7 +312,7 @@ end
 pickplayer(arg[2], _permpunish)
 end
 function oof(msg)
-local arg = stringtotable(msg)
+local arg = repack(msg)
 function _oof(getplrs)
 for i, plr in pairs(getplrs) do
 coroutine.resume(coroutine.create(function()
@@ -330,7 +330,7 @@ end
 pickplayer(arg[2], _oof)
 end
 function noaccessories(msg)
-local arg = stringtotable(msg)
+local arg = repack(msg)
 function _noaccessories(getplrs)
 for i, plr in pairs(getplrs) do
 if plr.Character then
@@ -398,7 +398,7 @@ plrs.PlayerAdded:connect(function(c)
 ded(c)
 end)
 function blockspam(msg)
-local arg = stringtotable(msg)
+local arg = repack(msg)
 function _blockspam(getplrs)
 for i, plr in pairs(getplrs) do
 _G.Players[plr.UserId].Blockspam = true
@@ -407,7 +407,7 @@ end
 pickplayer(arg[2], _blockspam)
 end
 function unblockspam(msg)
-local arg = stringtotable(msg)
+local arg = repack(msg)
 function _unblockspam(getplrs)
 for i, plr in pairs(getplrs) do
 _G.Players[plr.UserId].Blockspam = false
@@ -416,7 +416,7 @@ end
 pickplayer(arg[2], _unblockspam)
 end
 function removebase(msg)
-local arg = stringtotable(msg)
+local arg = repack(msg)
 function _removebase(getplrs)
 for i, plr in pairs(getplrs) do
 coroutine.resume(coroutine.create(function()
@@ -434,7 +434,7 @@ end
 pickplayer(arg[3], _removebase)
 end
 function thanossnap(msg)
-local arg = stringtotable(msg)
+local arg = repack(msg)
 function _thanossnap(getplrs)
 for i, plr in pairs(getplrs) do
 coroutine.resume(coroutine.create(function()
@@ -456,7 +456,7 @@ end
 pickplayer(arg[2], _thanossnap)
 end
 function canbuild(msg)
-local arg = stringtotable(msg)
+local arg = repack(msg)
 function setvalue(getplrs)
 for i, v in pairs(getplrs) do
 for i, base in pairs(workspace.Bases:GetChildren()) do
@@ -469,7 +469,7 @@ end
 pickplayer(arg[2], setvalue)
 end
 function ban(msg)
-local arg = stringtotable(msg)
+local arg = repack(msg)
 function _ban(getplrs)
 for i, plr in pairs(getplrs) do
 _G.Players[plr.UserId].Banned = true
@@ -478,7 +478,7 @@ end
 pickplayer(arg[2], _ban)
 end
 function unban(msg)
-local arg = stringtotable(msg)[2]
+local arg = repack(msg)[2]
 function _unban(getplrs)
 for i, plr in pairs(getplrs) do
 plr.Banned = false
@@ -487,7 +487,7 @@ end
 pickplayerv2(arg, _unban, {"Banned", true})
 end
 function blockhead(msg)
-local arg = stringtotable(msg)
+local arg = repack(msg)
 function _blockhead(getplrs)
 for i,plr in pairs(getplrs) do
 if plr.Character and plr.Character.Head:FindFirstChild("Mesh") then
@@ -498,7 +498,7 @@ end
 pickplayer(arg[2], _blockhead)
 end
 function noanim(msg)
-local arg = stringtotable(msg)
+local arg = repack(msg)
 function _noanim(getplrs)
 for i, plr in pairs(getplrs) do
 if plr.Character and plr.Character.Humanoid:FindFirstChild("Animator") then
@@ -509,7 +509,7 @@ end
 pickplayer(arg[2], _noanim)
 end
 function nosurvival(msg)
-local arg = stringtotable(msg)
+local arg = repack(msg)
 function _nosurvival(getplrs)
 for i, plr in pairs(getplrs) do
 function delsurvivetag()
@@ -535,7 +535,7 @@ end
 pickplayer(arg[2], _nosurvival)
 end
 function noface(msg)
-local arg = stringtotable(msg)
+local arg = repack(msg)
 function _noface(getplrs)
 for i, plr in pairs(getplrs) do
 if plr.Character and plr.Character.Head:FindFirstChild("face") then
@@ -554,7 +554,7 @@ end
 end)
 end
 function loopkill(msg)
-local arg = stringtotable(msg)
+local arg = repack(msg)
 function _loopkill(getplrs)
 for i, v in pairs(getplrs) do
 _G.Players[v.UserId].Loopkill = true
@@ -563,7 +563,7 @@ end
 pickplayer(arg[2], _loopkill)
 end
 function unloopkill(msg)
-local arg = stringtotable(msg)
+local arg = repack(msg)
 function _unloopkill(getplrs)
 for i,v in pairs(getplrs) do
 _G.Players[v.UserId].Loopkill = false
@@ -572,7 +572,7 @@ end
 pickplayer(arg[2], _unloopkill)
 end
 function ignoreplr(msg)
-local plrtoignore = stringtotable(msg)[2]
+local plrtoignore = repack(msg)[2]
 function _ignoreplr(getplrs)
 for i,v in pairs(getplrs) do
 _G.Players[v.UserId].Ignore = true
@@ -581,7 +581,7 @@ end
 pickplayer(plrtoignore, _ignoreplr)
 end
 function unignoreplr(msg)
-local arg = stringtotable(msg)[2]
+local arg = repack(msg)[2]
 function _unignoreplr(getplrs)
 for i, plr in pairs(getplrs) do
 plr.Ignore = false
@@ -770,10 +770,12 @@ end
 if msg == Prefix.."partbypart" then
 if workspace:FindFirstChild("Bases") then
 for i, base in pairs(workspace.Bases:GetChildren()) do
+coroutine.resume(coroutine.create(function()
 for i, block in pairs(base.Blocks:GetChildren()) do
 delete(block)
 wait()
 end
+end))
 end
 end
 for i, b in pairs(workspace:GetDescendants()) do
