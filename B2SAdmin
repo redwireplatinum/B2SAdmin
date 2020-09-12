@@ -6,6 +6,7 @@ local aura = 20
 local plrs = game.Players
 local lplr = plrs.LocalPlayer
 local mouse = lplr:GetMouse()
+local plrcommands = {}
 _G.killaura = false
 _G.mobaura = false
 local Prefix = ";"
@@ -37,7 +38,7 @@ end
 end
 return playertable
 end
-title = "Build to Survive Admin v6.0.1"
+title = "Build to Survive Admin v6.0.2"
 if game.ReplicatedStorage.PlayerEvents:FindFirstChild("e"..lplr.UserId) then
 delet = game.ReplicatedStorage.PlayerEvents["e"..lplr.UserId].DestroyItem
 else
@@ -64,10 +65,7 @@ else
     return false
 end
 end
-function prefixlength()
-return string.len(Prefix)
-end
-function repack(str)
+function pack(str)
 local t = {}
 local arg = ""
 str = str.." "
@@ -165,8 +163,7 @@ end
 end
 func(t)
 end
-function kill(msg)
-local arg = repack(msg)
+plrcommands.kill = function(msg)
 function _kill(getplrs)
 for i,plr in pairs(getplrs) do
 if plr.Character and plr.Character.Head:FindFirstChild("Neck") then
@@ -174,19 +171,17 @@ delete(plr.Character.Head.Neck)
 end
 end
 end
-pickplayer(arg[2], _kill)
+pickplayer(msg, _kill)
 end
-function kick(msg)
-local arg = repack(msg)
+plrcommands.kick = function(msg)
 function _kick(getplrs)
 for i,plr in pairs(getplrs) do
 delete(plr)
 end
 end
-pickplayer(arg[2], _kick)
+pickplayer(msg, _kick)
 end
-function clearbase(msg)
-local arg = repack(msg)
+plrcommands.clearbase = function(msg)
 function _clearbase(getplrs)
 for i, plr in pairs(getplrs) do
 for i, child in pairs(workspace.Bases:GetChildren()) do
@@ -198,10 +193,9 @@ end
 end
 end
 end
-pickplayer(arg[3], _clearbase)
+pickplayer(msg, _clearbase)
 end
-function cripple(msg)
-local arg = repack(msg)
+plrcommands.cripple = function(msg)
 function _cripple(getplrs)
 for i, plr in pairs(getplrs) do
 if plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
@@ -209,10 +203,9 @@ delete(plr.Character.HumanoidRootPart)
 end
 end
 end
-pickplayer(arg[2], _cripple)
+pickplayer(msg, _cripple)
 end
-function removelimbs(msg)
-local arg = repack(msg)
+plrcommands.removelimbs = function(msg)
 function _removelimbs(getplrs)
 for i, plr in pairs(getplrs) do
 if plr.Character then
@@ -224,10 +217,9 @@ end
 end
 end
 end
-pickplayer(arg[2], _removelimbs)
+pickplayer(msg, _removelimbs)
 end
-function removearms(msg)
-local arg = repack(msg)
+plrcommands.removearms = function(msg)
 function _removearms(getplrs)
 for i, plr in pairs(getplrs) do
 if plr.Character then
@@ -239,10 +231,9 @@ end
 end
 end
 end
-pickplayer(arg[2], _removearms)
+pickplayer(msg, _removearms)
 end
-function removelegs(msg)
-local arg = repack(msg)
+plrcommands.removelegs = function(msg)
 function _removelegs(getplrs)
 for i, plr in pairs(getplrs) do
 if plr.Character then
@@ -254,10 +245,9 @@ end
 end
 end
 end
-pickplayer(arg[2], _removelegs)
+pickplayer(msg, _removelegs)
 end
-function noclothing(msg)
-local arg = repack(msg)
+plrcommands.noclothing = function(msg)
 function _noclothing(getplrs)
 for i, plr in pairs(getplrs) do
 if plr.Character:FindFirstChild("Shirt") then
@@ -271,10 +261,9 @@ delete(plr.Character["Shirt Graphic"])
 end
 end
 end
-pickplayer(arg[2], _noclothing)
+pickplayer(msg, _noclothing)
 end
-function suffer(msg)
-local arg = repack(msg)
+plrcommands.suffer = function(msg)
 function _suffer(getplrs)
 for i, plr in pairs(getplrs) do
 if plr.Character and plr.Character:FindFirstChild("Humanoid") then
@@ -282,10 +271,9 @@ delete(plr.Character.Humanoid)
 end
 end
 end
-pickplayer(arg[2], _suffer)
+pickplayer(msg, _suffer)
 end
-function removetools(msg)
-local arg = repack(msg)
+plrcommands.removetools = function(msg)
 function _removetools(getplrs)
 for i, plr in pairs(getplrs) do
 for i, b in pairs(plr.Backpack:GetChildren()) do
@@ -298,10 +286,9 @@ end
 end
 end
 end
-pickplayer(arg[2], _removetools)
+pickplayer(msg, _removetools)
 end
-function permpunish(msg)
-local arg = repack(msg)
+plrcommands.permpunish = function(msg)
 function _permpunish(getplrs)
 for i, plr in pairs(getplrs) do
 if plr.Character then
@@ -309,10 +296,9 @@ delete(plr.Character)
 end
 end
 end
-pickplayer(arg[2], _permpunish)
+pickplayer(msg, _permpunish)
 end
-function oof(msg)
-local arg = repack(msg)
+plrcommands.oof = function(msg)
 function _oof(getplrs)
 for i, plr in pairs(getplrs) do
 coroutine.resume(coroutine.create(function()
@@ -327,10 +313,9 @@ end
 end))
 end
 end
-pickplayer(arg[2], _oof)
+pickplayer(msg, _oof)
 end
-function noaccessories(msg)
-local arg = repack(msg)
+plrcommands.noaccessories = function(msg)
 function _noaccessories(getplrs)
 for i, plr in pairs(getplrs) do
 if plr.Character then
@@ -342,7 +327,7 @@ end
 end
 end
 end
-pickplayer(arg[2], _noaccessories)
+pickplayer(msg, _noaccessories)
 end
 game.RunService.Heartbeat:connect(function()
 for i, plr in pairs(all()) do
@@ -397,26 +382,23 @@ end
 plrs.PlayerAdded:connect(function(c)
 ded(c)
 end)
-function blockspam(msg)
-local arg = repack(msg)
+plrcommands.blockspam = function(msg)
 function _blockspam(getplrs)
 for i, plr in pairs(getplrs) do
 _G.Players[plr.UserId].Blockspam = true
 end
 end
-pickplayer(arg[2], _blockspam)
+pickplayer(msg, _blockspam)
 end
-function unblockspam(msg)
-local arg = repack(msg)
+plrcommands.unblockspam = function(msg)
 function _unblockspam(getplrs)
 for i, plr in pairs(getplrs) do
 _G.Players[plr.UserId].Blockspam = false
 end
 end
-pickplayer(arg[2], _unblockspam)
+pickplayer(msg, _unblockspam)
 end
-function removebase(msg)
-local arg = repack(msg)
+plrcommands.removebase = function(msg)
 function _removebase(getplrs)
 for i, plr in pairs(getplrs) do
 coroutine.resume(coroutine.create(function()
@@ -431,10 +413,9 @@ end
 end))
 end
 end
-pickplayer(arg[3], _removebase)
+pickplayer(msg, _removebase)
 end
-function thanossnap(msg)
-local arg = repack(msg)
+plrcommands.thanossnap = function(msg)
 function _thanossnap(getplrs)
 for i, plr in pairs(getplrs) do
 coroutine.resume(coroutine.create(function()
@@ -453,41 +434,37 @@ delete(plr)
 end))
 end
 end
-pickplayer(arg[2], _thanossnap)
+pickplayer(msg, _thanossnap)
 end
-function canbuild(msg)
-local arg = repack(msg)
+plrcommands.canbuild = function(msg, boolval)
 function setvalue(getplrs)
 for i, v in pairs(getplrs) do
 for i, base in pairs(workspace.Bases:GetChildren()) do
 if base.Owner.Value == v.UserId then
-_G.Players[base.Owner.Value].Canbuild = stringtobool(arg[3])
+_G.Players[base.Owner.Value].Canbuild = stringtobool(boolval)
 end
 end
 end
 end
-pickplayer(arg[2], setvalue)
+pickplayer(msg, setvalue)
 end
-function ban(msg)
-local arg = repack(msg)
+plrcommands.ban = function(msg)
 function _ban(getplrs)
 for i, plr in pairs(getplrs) do
 _G.Players[plr.UserId].Banned = true
 end
 end
-pickplayer(arg[2], _ban)
+pickplayer(msg, _ban)
 end
-function unban(msg)
-local arg = repack(msg)[2]
+plrcommands.unban = function(msg)
 function _unban(getplrs)
 for i, plr in pairs(getplrs) do
 plr.Banned = false
 end
 end
-pickplayerv2(arg, _unban, {"Banned", true})
+pickplayerv2(msg, _unban, {"Banned", true})
 end
-function blockhead(msg)
-local arg = repack(msg)
+plrcommands.blockhead = function(msg)
 function _blockhead(getplrs)
 for i,plr in pairs(getplrs) do
 if plr.Character and plr.Character.Head:FindFirstChild("Mesh") then
@@ -495,10 +472,9 @@ delete(plr.Character.Head.Mesh)
 end
 end
 end
-pickplayer(arg[2], _blockhead)
+pickplayer(msg, _blockhead)
 end
-function noanim(msg)
-local arg = repack(msg)
+plrcommands.noanim = function(msg)
 function _noanim(getplrs)
 for i, plr in pairs(getplrs) do
 if plr.Character and plr.Character.Humanoid:FindFirstChild("Animator") then
@@ -506,10 +482,9 @@ delete(plr.Character.Humanoid.Animator)
 end
 end
 end
-pickplayer(arg[2], _noanim)
+pickplayer(msg, _noanim)
 end
-function nosurvival(msg)
-local arg = repack(msg)
+plrcommands.nosurvival = function(msg)
 function _nosurvival(getplrs)
 for i, plr in pairs(getplrs) do
 function delsurvivetag()
@@ -532,10 +507,9 @@ delsurvivetag()
 end)
 end
 end
-pickplayer(arg[2], _nosurvival)
+pickplayer(msg, _nosurvival)
 end
-function noface(msg)
-local arg = repack(msg)
+plrcommands.noface = function(msg)
 function _noface(getplrs)
 for i, plr in pairs(getplrs) do
 if plr.Character and plr.Character.Head:FindFirstChild("face") then
@@ -543,7 +517,7 @@ delete(plr.Character.Head.face)
 end
 end
 end
-pickplayer(arg[2], _noface)
+pickplayer(msg, _noface)
 end
 for i, v in pairs(workspace.Bases:GetChildren()) do
 v.Blocks.ChildAdded:connect(function(block)
@@ -553,41 +527,37 @@ delete(block)
 end
 end)
 end
-function loopkill(msg)
-local arg = repack(msg)
+plrcommands.loopkill = function(msg)
 function _loopkill(getplrs)
 for i, v in pairs(getplrs) do
 _G.Players[v.UserId].Loopkill = true
 end
 end
-pickplayer(arg[2], _loopkill)
+pickplayer(msg, _loopkill)
 end
-function unloopkill(msg)
-local arg = repack(msg)
+plrcommands.unloopkill = function(msg)
 function _unloopkill(getplrs)
 for i,v in pairs(getplrs) do
 _G.Players[v.UserId].Loopkill = false
 end
 end
-pickplayer(arg[2], _unloopkill)
+pickplayer(msg, _unloopkill)
 end
-function ignoreplr(msg)
-local plrtoignore = repack(msg)[2]
+plrcommands.ignoreplr = function(msg)
 function _ignoreplr(getplrs)
 for i,v in pairs(getplrs) do
 _G.Players[v.UserId].Ignore = true
 end
 end
-pickplayer(plrtoignore, _ignoreplr)
+pickplayer(msg, _ignoreplr)
 end
-function unignoreplr(msg)
-local arg = repack(msg)[2]
+plrcommands.unignoreplr = function(msg)
 function _unignoreplr(getplrs)
 for i, plr in pairs(getplrs) do
 plr.Ignore = false
 end
 end
-pickplayerv2(arg, _unignoreplr, {"Ignore", true})
+pickplayerv2(msg, _unignoreplr, {"Ignore", true})
 end
 local Commands = [[
 
@@ -597,7 +567,8 @@ kick [plr]
 kill [plr]
 nobases
 clearws
-clear base [plr]
+clearbase [plr]
+removebase [plr] (like clear base except it removes blocks one at a time [USE THIS ON YOURSELF IF YOU USED BLOCKSPAM OR ELSE YOU COULD BE KICKED (I guess roblox's anticheat fires if a remote event or something is doing too many things at once.)]
 delete products (Deletes the annoying things like the visible laser gun, doge and others)
 delete enemies
 zclick destroy (FE click destroy except its Z + Left Click)
@@ -621,27 +592,26 @@ ooftime [num] (changes delay time when you use oof command on someone, is defaul
 partbypart (deletes all parts of the workspace one at a time, beginning with the base blocks)
 removelighting
 enemyaura (Automatically deletes enemies when nearby)
+unenemyaura
 blockspam [plr]
-remove base [plr] (like clear base except it removes blocks one at a time [USE THIS ON YOURSELF IF YOU USED BLOCKSPAM OR ELSE YOU COULD BE KICKED (I guess roblox's anticheat fires if a remote event or something is doing too many things at once.)]
+unblockspam [plr]
 thanossnap [plr]
 canbuild [plr] [true/false] (changes a players ability to add blocks to their base)
-ban [plr]
 blockhead [plr]
 noanim [plr]
 nosurvival [plr] (makes it so the affected player doesn't earn any survivals to the Survived leaderstat)
 noface [plr]
 killaura
+unkillaura
 auravalue [num] (sets value for the killaura and enemyaura cmd, is defaulted to 20)
 antibot (attempts to remove bots from entering the game by auto kicking a player if their Survived value is 0)
 cmds (re-prints list of commands in case something happens in the dev log)
+ban [plr]
 unban [plr]
 getbannedplayers (prints list of all players you banned)
 loopkill [plr]
 unloopkill [plr]
 changeprefix [prefix] (cannot have spaces)
-unblockspam [plr]
-unkillaura
-unenemyaura
 ignoreplr [plr] (Excludes certain players COMPLETELY when using player commands)
 unignoreplr [plr]
 ]]
@@ -649,8 +619,10 @@ function getcmds()
 print(Commands)
 end
 lplr.Chatted:connect(function(msg)
-if msg:sub(1, (prefixlength() - 1) + 6) == Prefix.."kick " then
-kick(msg)
+local msg1, msg2, msg3 = unpack(pack(msg))
+local _msg = msg1:sub(Prefix:len()+1)
+if plrcommands[_msg] then
+plrcommands[_msg](msg2, msg3)
 end
 if msg == Prefix.."nobases" then
 delete(workspace.Bases)
@@ -666,12 +638,6 @@ if msg == Prefix.."delete enemies" then
 for i, enemy in pairs(workspace.Mobs:GetChildren()) do
 delete(enemy)
 end
-end
-if msg:sub(1, (prefixlength() - 1) + 6) == Prefix.."kill " then
-kill(msg)
-end
-if msg:sub(1, (prefixlength() - 1) + 12) == Prefix.."clear base " then
-clearbase(msg)
 end
 if msg == Prefix.."delete products" then
 for i, child in pairs(workspace:GetDescendants()) do
@@ -719,27 +685,6 @@ Text = "Wait for enemies to spawn.";
 end
 end)
 end
-if msg:sub(1, (prefixlength() - 1) + 9) == Prefix.."cripple " then
-cripple(msg)
-end
-if msg:sub(1, (prefixlength() - 1) + 13) == Prefix.."removelimbs " then
-removelimbs(msg)
-end
-if msg:sub(1, (prefixlength() - 1) + 12) == Prefix.."removearms " then
-removearms(msg)
-end
-if msg:sub(1, (prefixlength() - 1) + 12) == Prefix.."removelegs " then
-removelegs(msg)
-end
-if msg:sub(1, (prefixlength() - 1) + 12) == Prefix.."noclothing " then
-noclothing(msg)
-end
-if msg:sub(1, (prefixlength() - 1) + 8) == Prefix.."suffer " then
-suffer(msg)
-end
-if msg:sub(1, (prefixlength() - 1) + 13) == Prefix.."removetools " then
-removetools(msg)
-end
 if msg == Prefix.."noenemies" then
 delete(workspace.Mobs)
 end
@@ -752,20 +697,11 @@ end
 end
 end
 end
-if msg:sub(1, (prefixlength() - 1) + 12) == Prefix.."permpunish " then
-permpunish(msg)
-end
-if msg:sub(1, (prefixlength() - 1) + 5) == Prefix.."oof " then
-oof(msg)
-end
-if msg:sub(1, (prefixlength() - 1) + 15) == Prefix.."noaccessories " then
-noaccessories(msg)
-end
 if msg == Prefix.."getiy" then
 loadstring(game:HttpGet(('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'),true))()
 end
-if msg:sub(1, (prefixlength() - 1) + 9) == Prefix.."ooftime " then
-ooftime = tonumber(msg:sub(9 + prefixlength()))
+if msg1 == Prefix.."ooftime" then
+ooftime = tonumber(msg2)
 end
 if msg == Prefix.."partbypart" then
 if workspace:FindFirstChild("Bases") then
@@ -793,38 +729,11 @@ end
 if msg == Prefix.."enemyaura" then
 _G.mobaura = true
 end
-if msg:sub(1, (prefixlength() - 1) + 11) == Prefix.."blockspam " then
-blockspam(msg)
-end
-if msg:sub(1, (prefixlength() - 1) + 13) == Prefix.."remove base " then
-removebase(msg)
-end
-if msg:sub(1, (prefixlength() - 1) + 12) == Prefix.."thanossnap " then
-thanossnap(msg)
-end
-if msg:sub(1, (prefixlength() - 1) + 10) == Prefix.."canbuild " then
-canbuild(msg)
-end
-if msg:sub(1, (prefixlength() - 1) + 5) == Prefix.."ban " then
-ban(msg)
-end
-if msg:sub(1, (prefixlength() - 1) + 11) == Prefix.."blockhead " then
-blockhead(msg)
-end
-if msg:sub(1, (prefixlength() - 1) + 8) == Prefix.."noanim " then
-noanim(msg)
-end
-if msg:sub(1, (prefixlength() - 1) + 12) == Prefix.."nosurvival " then
-nosurvival(msg)
-end
-if msg:sub(1, (prefixlength() - 1) + 8) == Prefix.."noface " then
-noface(msg)
-end
 if msg == Prefix.."killaura" then
 _G.killaura = true
 end
-if msg:sub(1, (prefixlength() - 1) + 11) == Prefix.."auravalue " then
-aura = tonumber(msg:sub(11 + prefixlength()))
+if msg1 == Prefix.."auravalue" then
+aura = tonumber(msg2)
 end
 if msg == Prefix.."antibot" then
 plrs.PlayerAdded:connect(function(plr)
@@ -839,9 +748,6 @@ end
 if msg == Prefix.."cmds" then
 getcmds()
 end
-if msg:sub(1, (prefixlength() - 1) + 7) == Prefix.."unban " then
-unban(msg)
-end
 if msg == Prefix.."getbannedplayers" then
 print("--List of banned players--")
 for i,v in pairs(_G.Players) do
@@ -851,19 +757,8 @@ end
 end
 print("----")
 end
-if msg:sub(1, (prefixlength() - 1) + 10) == Prefix.."loopkill " then
-loopkill(msg)
-end
-if msg:sub(1, (prefixlength() - 1) + 12) == Prefix.."unloopkill " then
-unloopkill(msg)
-end
-if msg:sub(1, (prefixlength() - 1) +14) == Prefix.."changeprefix " then
-if msg:sub(15,15) ~= "" and not msg:sub(14 + prefixlength()):find(" ") then
-Prefix = msg:sub(14 + prefixlength())
-end
-end
-if msg:sub(1, 12 + prefixlength()) == Prefix.."unblockspam " then
-unblockspam(msg)
+if msg1 == Prefix.."changeprefix" then
+Prefix = msg2
 end
 if msg == Prefix.."unenemyaura" then
 _G.mobaura = false
@@ -871,17 +766,11 @@ end
 if msg == Prefix.."unkillaura" then
 _G.killaura = false
 end
-if msg:sub(1, 9 + prefixlength()) == Prefix.."ignoreplr" then
-ignoreplr(msg)
-end
-if msg:sub(1, 11 + prefixlength()) == Prefix.."unignoreplr" then
-unignoreplr(msg)
-end
 end)
 getcmds()
 game.StarterGui:SetCore("SendNotification", {
 Title = title;
-Text = "I accidentally switched the aimbot and admin script, my bad.";
+Text = "Changed 'remove base' and 'clear base' to 'removebase' and 'clearbase' & shortened the code again.";
 Duration = 10;
 })
 end
