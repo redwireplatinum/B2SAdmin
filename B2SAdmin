@@ -3,6 +3,7 @@ _G.B2SAdmin = true
 local delet
 local ooftime = 0.1
 local aura = 20
+local Selectedblock = game.ReplicatedStorage.GameItems.Colors.Green
 local plrs = game.Players
 local lplr = plrs.LocalPlayer
 local mouse = lplr:GetMouse()
@@ -38,7 +39,7 @@ end
 end
 return playertable
 end
-title = "Build to Survive Admin v6.2"
+title = "Build to Survive Admin v6.3"
 if game.ReplicatedStorage.PlayerEvents:FindFirstChild("e"..lplr.UserId) then
 delet = game.ReplicatedStorage.PlayerEvents["e"..lplr.UserId].DestroyItem
 else
@@ -332,7 +333,7 @@ end
 game.RunService.Heartbeat:connect(function()
 for i, plr in pairs(all()) do
 if plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and _G.Players[plr.UserId].Blockspam == true then
-place(plr.Character.HumanoidRootPart.CFrame, game.ReplicatedStorage.GameItems.Colors.Green)
+place(plr.Character.HumanoidRootPart.CFrame, Selectedblock)
 end
 if _G.Players[plr.UserId].Banned == true then
 delete(plr)
@@ -576,11 +577,13 @@ for i, block in pairs(base.Blocks:GetChildren()) do
     else
         partcframe = block.PrimaryPart.CFrame
     end
+	if partcframe then
 	local playerbase = block.Parent.Parent.Base
         local x1,y1,z1 = playerbase.CFrame.X, playerbase.CFrame.Y, playerbase.CFrame.Z
         local x2,y2,z2 = partcframe.X, partcframe.Y, partcframe.Z
         local cframe = CFrame.new() + Vector3.new((x2-x1) + yourbase.CFrame.X, (y2-y1) + yourbase.CFrame.Y, (z2-z1) + yourbase.CFrame.Z)
         place(cframe, block)
+	end
 end
 end
 end
@@ -605,12 +608,14 @@ for i, block in pairs(base.Blocks:GetChildren()) do
     else
         partcframe = block.PrimaryPart.CFrame
     end
+	if partcframe then
 	local playerbase = block.Parent.Parent.Base
         local x1,y1,z1 = playerbase.CFrame.X, playerbase.CFrame.Y, playerbase.CFrame.Z
         local x2,y2,z2 = partcframe.X, partcframe.Y, partcframe.Z
         local cframe = CFrame.new() + Vector3.new((x2-x1) + yourbase.CFrame.X, (y2-y1) + yourbase.CFrame.Y, (z2-z1) + yourbase.CFrame.Z)
         place(cframe, block)
 		delete(block)
+	end
 end
 end
 end
@@ -675,6 +680,7 @@ whitelist [plr] (Excludes certain players COMPLETELY when using player commands)
 unwhitelist [plr]
 copybase [plr]
 stealbase [plr]
+changeblock (changes the block used in qclick spawn and blockspam)
 ]]
 local getcmds = function()
 print(Commands)
@@ -718,7 +724,7 @@ if msg == Prefix.."qclick spawn" then
 mouse.Button1Down:connect(function()
 if not game.UserInputService:IsKeyDown(Enum.KeyCode.Q) then return end
 if not mouse.Hit then return end
-place(mouse.Hit, game.ReplicatedStorage.GameItems.Colors.Green)
+place(mouse.Hit, Selectedblock)
 end)
 end
 if msg == Prefix.."end server" then
@@ -827,11 +833,28 @@ end
 if msg == Prefix.."unkillaura" then
 _G.killaura = false
 end
+if msg == Prefix.."changeblock" then
+game.StarterGui:SetCore("ChatMakeSystemMessage" {
+Text = "Click on an object to make it the new block.";
+Font = Enum.Font.Cartoon;})
+mouse.Button1Down:Wait()
+local target = mouse.Target
+if target ~= nil then
+Selectedblock = target
+game.StarterGui:SetCore("ChatMakeSystemMessage" {
+Text = "Selected block changed to "..target.Name;
+Font = Enum.Font.Cartoon;})
+else
+game.StarterGui:SetCore("ChatMakeSystemMessage" {
+Text = "The target you chose is invalid";
+Font = Enum.Font.Cartoon;})
+end
+end
 end)
 getcmds()
 game.StarterGui:SetCore("SendNotification", {
 Title = title;
-Text = "Added 'copybase' and 'stealbase' & changed ignoreplr to 'whitelist'.";
+Text = "Added 'copybase', 'stealbase', 'changeblock' & changed ignoreplr to 'whitelist'.";
 Duration = 10;
 })
 end
