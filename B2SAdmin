@@ -543,21 +543,21 @@ end
 end
 pickplayer(msg, _unloopkill)
 end
-plrcommands.ignoreplr = function(msg)
-local _ignoreplr = function(getplrs)
+plrcommands.whitelist = function(msg)
+local _whitelist = function(getplrs)
 for i,v in pairs(getplrs) do
 _G.Players[v.UserId].Ignore = true
 end
 end
-pickplayer(msg, _ignoreplr)
+pickplayer(msg, _whitelist)
 end
-plrcommands.unignoreplr = function(msg)
-local _unignoreplr = function(getplrs)
+plrcommands.unwhitelist = function(msg)
+local _unwhitelist = function(getplrs)
 for i, plr in pairs(getplrs) do
 plr.Ignore = false
 end
 end
-pickplayerv2(msg, _unignoreplr, {"Ignore", true})
+pickplayerv2(msg, _unwhitelist, {"Ignore", true})
 end
 plrcommands.copybase = function(msg)
 local _copybase = function(getplrs)
@@ -671,8 +671,8 @@ getbannedplayers (prints list of all players you banned)
 loopkill [plr]
 unloopkill [plr]
 changeprefix [prefix] (cannot have spaces)
-ignoreplr [plr] (Excludes certain players COMPLETELY when using player commands)
-unignoreplr [plr]
+whitelist [plr] (Excludes certain players COMPLETELY when using player commands)
+unwhitelist [plr]
 copybase [plr]
 stealbase [plr]
 ]]
@@ -831,7 +831,7 @@ end)
 getcmds()
 game.StarterGui:SetCore("SendNotification", {
 Title = title;
-Text = "Added 'copybase' and 'stealbase'.";
+Text = "Added 'copybase' and 'stealbase' & changed ignoreplr to 'whitelist'.";
 Duration = 10;
 })
 end
