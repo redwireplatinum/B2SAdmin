@@ -11,7 +11,7 @@ _G.killaura = false
 _G.mobaura = false
 local Prefix = ";"
 _G.Players = {}
-function addargs(v)
+local addargs = function(v)
 _G.Players[v.UserId] = {}
 _G.Players[v.UserId].Username = v.Name
 _G.Players[v.UserId].Loopkill = false
@@ -29,7 +29,7 @@ if not _G.Players[v.UserId] then
 addargs(v)
 end
 end)
-function all()
+local all = function()
 local playertable = {}
 for i,v in pairs(plrs:GetPlayers()) do
 if _G.Players[v.UserId].Ignore == false then
@@ -38,7 +38,7 @@ end
 end
 return playertable
 end
-title = "Build to Survive Admin v6.0.2"
+title = "Build to Survive Admin v6.2"
 if game.ReplicatedStorage.PlayerEvents:FindFirstChild("e"..lplr.UserId) then
 delet = game.ReplicatedStorage.PlayerEvents["e"..lplr.UserId].DestroyItem
 else
@@ -53,10 +53,10 @@ folder:WaitForChild("DestroyItem")
 folder:WaitForChild("PlaceItem")
 delet = game.ReplicatedStorage.PlayerEvents["e"..lplr.UserId].DestroyItem
 end
-function delete(child)
+local delete = function(child)
 delet:FireServer(child)
 end
-function stringtobool(str)
+local stringtobool = function(str)
 if str == "true" then
     return true
 elseif str == "false" then
@@ -65,7 +65,7 @@ else
     return false
 end
 end
-function pack(str)
+local pack = function(str)
 local t = {}
 local arg = ""
 str = str.." "
@@ -83,10 +83,10 @@ end
 end
 return t
 end
-function place(cframe, child)
+local place = function(cframe, child)
 delet.Parent.PlaceItem:FireServer(cframe, child)
 end
-function pickplayer(str, func)
+local pickplayer = function(str, func)
 local playertable = {}
 if str == "others" then
 for i, plr in pairs(all()) do
@@ -126,7 +126,7 @@ end
 end
 func(playertable)
 end
-function pickplayerv2(str, func, Vartable)
+local pickplayerv2 = function(str, func, Vartable)
 local t = {}
 if str == "others" then
 for i,v in pairs(_G.Players) do
@@ -164,7 +164,7 @@ end
 func(t)
 end
 plrcommands.kill = function(msg)
-function _kill(getplrs)
+local _kill = function(getplrs)
 for i,plr in pairs(getplrs) do
 if plr.Character and plr.Character.Head:FindFirstChild("Neck") then
 delete(plr.Character.Head.Neck)
@@ -174,7 +174,7 @@ end
 pickplayer(msg, _kill)
 end
 plrcommands.kick = function(msg)
-function _kick(getplrs)
+local _kick = function(getplrs)
 for i,plr in pairs(getplrs) do
 delete(plr)
 end
@@ -182,7 +182,7 @@ end
 pickplayer(msg, _kick)
 end
 plrcommands.clearbase = function(msg)
-function _clearbase(getplrs)
+local _clearbase = function(getplrs)
 for i, plr in pairs(getplrs) do
 for i, child in pairs(workspace.Bases:GetChildren()) do
 if child.Owner.Value == plr.UserId then
@@ -196,7 +196,7 @@ end
 pickplayer(msg, _clearbase)
 end
 plrcommands.cripple = function(msg)
-function _cripple(getplrs)
+local _cripple = function(getplrs)
 for i, plr in pairs(getplrs) do
 if plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
 delete(plr.Character.HumanoidRootPart)
@@ -206,7 +206,7 @@ end
 pickplayer(msg, _cripple)
 end
 plrcommands.removelimbs = function(msg)
-function _removelimbs(getplrs)
+local _removelimbs = function(getplrs)
 for i, plr in pairs(getplrs) do
 if plr.Character then
 for i, t in pairs(plr.Character:GetChildren()) do
@@ -220,7 +220,7 @@ end
 pickplayer(msg, _removelimbs)
 end
 plrcommands.removearms = function(msg)
-function _removearms(getplrs)
+local _removearms = function(getplrs)
 for i, plr in pairs(getplrs) do
 if plr.Character then
 for i, t in pairs(plr.Character:GetChildren()) do
@@ -234,7 +234,7 @@ end
 pickplayer(msg, _removearms)
 end
 plrcommands.removelegs = function(msg)
-function _removelegs(getplrs)
+local _removelegs = function(getplrs)
 for i, plr in pairs(getplrs) do
 if plr.Character then
 for i, t in pairs(plr.Character:GetChildren()) do
@@ -248,7 +248,7 @@ end
 pickplayer(msg, _removelegs)
 end
 plrcommands.noclothing = function(msg)
-function _noclothing(getplrs)
+local _noclothing = function(getplrs)
 for i, plr in pairs(getplrs) do
 if plr.Character:FindFirstChild("Shirt") then
 delete(plr.Character.Shirt)
@@ -264,7 +264,7 @@ end
 pickplayer(msg, _noclothing)
 end
 plrcommands.suffer = function(msg)
-function _suffer(getplrs)
+local _suffer = function(getplrs)
 for i, plr in pairs(getplrs) do
 if plr.Character and plr.Character:FindFirstChild("Humanoid") then
 delete(plr.Character.Humanoid)
@@ -274,7 +274,7 @@ end
 pickplayer(msg, _suffer)
 end
 plrcommands.removetools = function(msg)
-function _removetools(getplrs)
+local _removetools = function(getplrs)
 for i, plr in pairs(getplrs) do
 for i, b in pairs(plr.Backpack:GetChildren()) do
 delete(b)
@@ -289,7 +289,7 @@ end
 pickplayer(msg, _removetools)
 end
 plrcommands.permpunish = function(msg)
-function _permpunish(getplrs)
+local _permpunish = function(getplrs)
 for i, plr in pairs(getplrs) do
 if plr.Character then
 delete(plr.Character)
@@ -299,7 +299,7 @@ end
 pickplayer(msg, _permpunish)
 end
 plrcommands.oof = function(msg)
-function _oof(getplrs)
+local _oof = function(getplrs)
 for i, plr in pairs(getplrs) do
 coroutine.resume(coroutine.create(function()
 if plr.Character then
@@ -316,7 +316,7 @@ end
 pickplayer(msg, _oof)
 end
 plrcommands.noaccessories = function(msg)
-function _noaccessories(getplrs)
+local _noaccessories = function(getplrs)
 for i, plr in pairs(getplrs) do
 if plr.Character then
 for i, t in pairs(plr.Character:GetChildren()) do
@@ -370,7 +370,7 @@ workspace.Mobs.ChildAdded:connect(function(mob)
 mob:WaitForChild("HumanoidRootPart")
 _G.enemyaura(mob)
 end)
-function ded(c)
+local ded = function(c)
 c.CharacterAdded:connect(function(chr)
 _G.plraura(chr)
 end)
@@ -383,7 +383,7 @@ plrs.PlayerAdded:connect(function(c)
 ded(c)
 end)
 plrcommands.blockspam = function(msg)
-function _blockspam(getplrs)
+local _blockspam = function(getplrs)
 for i, plr in pairs(getplrs) do
 _G.Players[plr.UserId].Blockspam = true
 end
@@ -391,7 +391,7 @@ end
 pickplayer(msg, _blockspam)
 end
 plrcommands.unblockspam = function(msg)
-function _unblockspam(getplrs)
+local _unblockspam = function(getplrs)
 for i, plr in pairs(getplrs) do
 _G.Players[plr.UserId].Blockspam = false
 end
@@ -399,7 +399,7 @@ end
 pickplayer(msg, _unblockspam)
 end
 plrcommands.removebase = function(msg)
-function _removebase(getplrs)
+local _removebase = function(getplrs)
 for i, plr in pairs(getplrs) do
 coroutine.resume(coroutine.create(function()
 for i, child in pairs(workspace.Bases:GetChildren()) do
@@ -416,7 +416,7 @@ end
 pickplayer(msg, _removebase)
 end
 plrcommands.thanossnap = function(msg)
-function _thanossnap(getplrs)
+local _thanossnap = function(getplrs)
 for i, plr in pairs(getplrs) do
 coroutine.resume(coroutine.create(function()
 for i, t in pairs(plr.Character:GetChildren()) do
@@ -437,7 +437,7 @@ end
 pickplayer(msg, _thanossnap)
 end
 plrcommands.canbuild = function(msg, boolval)
-function setvalue(getplrs)
+local setvalue = function(getplrs)
 for i, v in pairs(getplrs) do
 for i, base in pairs(workspace.Bases:GetChildren()) do
 if base.Owner.Value == v.UserId then
@@ -449,7 +449,7 @@ end
 pickplayer(msg, setvalue)
 end
 plrcommands.ban = function(msg)
-function _ban(getplrs)
+local _ban = function(getplrs)
 for i, plr in pairs(getplrs) do
 _G.Players[plr.UserId].Banned = true
 end
@@ -457,7 +457,7 @@ end
 pickplayer(msg, _ban)
 end
 plrcommands.unban = function(msg)
-function _unban(getplrs)
+local _unban = function(getplrs)
 for i, plr in pairs(getplrs) do
 plr.Banned = false
 end
@@ -465,7 +465,7 @@ end
 pickplayerv2(msg, _unban, {"Banned", true})
 end
 plrcommands.blockhead = function(msg)
-function _blockhead(getplrs)
+local _blockhead = function(getplrs)
 for i,plr in pairs(getplrs) do
 if plr.Character and plr.Character.Head:FindFirstChild("Mesh") then
 delete(plr.Character.Head.Mesh)
@@ -475,7 +475,7 @@ end
 pickplayer(msg, _blockhead)
 end
 plrcommands.noanim = function(msg)
-function _noanim(getplrs)
+local _noanim = function(getplrs)
 for i, plr in pairs(getplrs) do
 if plr.Character and plr.Character.Humanoid:FindFirstChild("Animator") then
 delete(plr.Character.Humanoid.Animator)
@@ -485,9 +485,9 @@ end
 pickplayer(msg, _noanim)
 end
 plrcommands.nosurvival = function(msg)
-function _nosurvival(getplrs)
+local _nosurvival = function(getplrs)
 for i, plr in pairs(getplrs) do
-function delsurvivetag()
+local delsurvivetag = function()
 if plr.Character then
 if plr.Character:FindFirstChild("Survivor") then
 delete(plr.Character.Survivor)
@@ -510,7 +510,7 @@ end
 pickplayer(msg, _nosurvival)
 end
 plrcommands.noface = function(msg)
-function _noface(getplrs)
+local _noface = function(getplrs)
 for i, plr in pairs(getplrs) do
 if plr.Character and plr.Character.Head:FindFirstChild("face") then
 delete(plr.Character.Head.face)
@@ -528,7 +528,7 @@ end
 end)
 end
 plrcommands.loopkill = function(msg)
-function _loopkill(getplrs)
+local _loopkill = function(getplrs)
 for i, v in pairs(getplrs) do
 _G.Players[v.UserId].Loopkill = true
 end
@@ -536,7 +536,7 @@ end
 pickplayer(msg, _loopkill)
 end
 plrcommands.unloopkill = function(msg)
-function _unloopkill(getplrs)
+local _unloopkill = function(getplrs)
 for i,v in pairs(getplrs) do
 _G.Players[v.UserId].Loopkill = false
 end
@@ -544,7 +544,7 @@ end
 pickplayer(msg, _unloopkill)
 end
 plrcommands.ignoreplr = function(msg)
-function _ignoreplr(getplrs)
+local _ignoreplr = function(getplrs)
 for i,v in pairs(getplrs) do
 _G.Players[v.UserId].Ignore = true
 end
@@ -552,12 +552,65 @@ end
 pickplayer(msg, _ignoreplr)
 end
 plrcommands.unignoreplr = function(msg)
-function _unignoreplr(getplrs)
+local _unignoreplr = function(getplrs)
 for i, plr in pairs(getplrs) do
 plr.Ignore = false
 end
 end
 pickplayerv2(msg, _unignoreplr, {"Ignore", true})
+end
+plrcommands.copybase = function(msg)
+local _copybase = function(getplrs)
+local yourbase
+for i,v in pairs(workspace.Bases:GetChildren()) do if v.Owner.Value == lplr.UserId then yourbase = v.Base end end
+for i,plr in pairs(getplrs) do
+for i, base in pairs(workspace.Bases:GetChildren()) do
+if base.Owner.Value == plr.UserId then
+for i, block in pairs(base.Blocks:GetChildren()) do
+    local partcframe
+    if block:IsA("BasePart") then
+        partcframe = block.CFrame
+    else
+        partcframe = block.PrimaryPart.CFrame
+    end
+	local playerbase = block.Parent.Parent.Base
+        local x1,y1,z1 = playerbase.CFrame.X, playerbase.CFrame.Y, playerbase.CFrame.Z
+        local x2,y2,z2 = partcframe.X, partcframe.Y, partcframe.Z
+        local cframe = CFrame.new() + Vector3.new((x2-x1) + yourbase.CFrame.X, (y2-y1) + yourbase.CFrame.Y, (z2-z1) + yourbase.CFrame.Z)
+        place(cframe, block)
+end
+end
+end
+end
+end
+pickplayer(msg, _copybase)
+end
+plrcommands.stealbase = function(msg)
+local _stealbase = function(getplrs)
+local yourbase
+for i,v in pairs(workspace.Bases:GetChildren()) do if v.Owner.Value == lplr.UserId then yourbase = v.Base end end
+for i,plr in pairs(getplrs) do
+for i, base in pairs(workspace.Bases:GetChildren()) do
+if base.Owner.Value == plr.UserId then
+for i, block in pairs(base.Blocks:GetChildren()) do
+    local partcframe
+    if block:IsA("BasePart") then
+        partcframe = block.CFrame
+    else
+        partcframe = block.PrimaryPart.CFrame
+    end
+	local playerbase = block.Parent.Parent.Base
+        local x1,y1,z1 = playerbase.CFrame.X, playerbase.CFrame.Y, playerbase.CFrame.Z
+        local x2,y2,z2 = partcframe.X, partcframe.Y, partcframe.Z
+        local cframe = CFrame.new() + Vector3.new((x2-x1) + yourbase.CFrame.X, (y2-y1) + yourbase.CFrame.Y, (z2-z1) + yourbase.CFrame.Z)
+        place(cframe, block)
+		delete(block)
+end
+end
+end
+end
+end
+pickplayer(msg, _stealbase)
 end
 local Commands = [[
 
@@ -614,8 +667,10 @@ unloopkill [plr]
 changeprefix [prefix] (cannot have spaces)
 ignoreplr [plr] (Excludes certain players COMPLETELY when using player commands)
 unignoreplr [plr]
+copybase [plr]
+stealbase [plr]
 ]]
-function getcmds()
+local getcmds = function()
 print(Commands)
 end
 lplr.Chatted:connect(function(msg)
@@ -770,7 +825,7 @@ end)
 getcmds()
 game.StarterGui:SetCore("SendNotification", {
 Title = title;
-Text = "Changed 'remove base' and 'clear base' to 'removebase' and 'clearbase' & shortened the code again.";
+Text = "Added 'copybase' and 'stealbase'.";
 Duration = 10;
 })
 end
