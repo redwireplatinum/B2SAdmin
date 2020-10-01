@@ -563,7 +563,7 @@ plrcommands.copybase = function(msg)
 local _copybase = function(getplrs)
 local yourbase
 for i,v in pairs(workspace.Bases:GetChildren()) do if v.Owner.Value == lplr.UserId then yourbase = v.Base end end
-for i,v in pairs(yourbase.Blocks:GetChildren()) do
+for i,v in pairs(yourbase.Parent.Blocks:GetChildren()) do
 delete(v)
 end
 for i,plr in pairs(getplrs) do
@@ -592,7 +592,7 @@ plrcommands.stealbase = function(msg)
 local _stealbase = function(getplrs)
 local yourbase
 for i,v in pairs(workspace.Bases:GetChildren()) do if v.Owner.Value == lplr.UserId then yourbase = v.Base end end
-for i,v in pairs(yourbase.Blocks:GetChildren()) do
+for i,v in pairs(yourbase.Parent.Blocks:GetChildren()) do
 delete(v)
 end
 for i,plr in pairs(getplrs) do
