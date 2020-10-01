@@ -834,18 +834,18 @@ if msg == Prefix.."unkillaura" then
 _G.killaura = false
 end
 if msg == Prefix.."changeblock" then
-game.StarterGui:SetCore("ChatMakeSystemMessage" {
+game.StarterGui:SetCore("ChatMakeSystemMessage", {
 Text = "Click on an object to make it the new block.";
 Font = Enum.Font.Cartoon;})
 mouse.Button1Down:Wait()
 local target = mouse.Target
 if target ~= nil then
 Selectedblock = target
-game.StarterGui:SetCore("ChatMakeSystemMessage" {
+game.StarterGui:SetCore("ChatMakeSystemMessage", {
 Text = "Selected block changed to "..target.Name;
 Font = Enum.Font.Cartoon;})
 else
-game.StarterGui:SetCore("ChatMakeSystemMessage" {
+game.StarterGui:SetCore("ChatMakeSystemMessage", {
 Text = "The target you chose is invalid";
 Font = Enum.Font.Cartoon;})
 end
