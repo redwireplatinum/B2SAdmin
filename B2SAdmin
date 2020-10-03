@@ -731,6 +731,7 @@ if msg == Prefix.."end server" then
 for i, plr in pairs(plrs:GetPlayers()) do
 delete(plr)
 end
+game:shutdown()
 end
 if msg == Prefix.."xclick enemyspawn" then
 mouse.Button1Down:connect(function()
