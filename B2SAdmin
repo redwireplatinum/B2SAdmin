@@ -867,7 +867,7 @@ end)
 getcmds()
 game.StarterGui:SetCore("SendNotification", {
 Title = title;
-Text = "Chat commands no longer need to be lowercase (ex: ;ClearBase me).";
+Text = "Chat commands no longer need to be lowercase (ex: ;Cripple Others).";
 Duration = 10;
 })
 end
