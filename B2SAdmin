@@ -39,7 +39,7 @@ end
 end
 return playertable
 end
-title = "Build to Survive Admin v6.3.1"
+title = "Build to Survive Admin v6.3.2"
 if game.ReplicatedStorage.PlayerEvents:FindFirstChild("e"..lplr.UserId) then
 delet = game.ReplicatedStorage.PlayerEvents["e"..lplr.UserId].DestroyItem
 else
@@ -55,7 +55,7 @@ folder:WaitForChild("PlaceItem")
 delet = folder.DestroyItem
 end
 local Prefixtxt = lplr.PlayerGui.Interface.text
-Prefixtxt.Text = "Admin executed lmao, prefix = "..Prefix
+Prefixtxt.Text = "Admin executed lmao, prefix = "..Prefix:lower()
 local delete = function(child)
 delet:FireServer(child)
 end
@@ -634,6 +634,7 @@ Anyone that is whitelisted will NOT be affected until unwhitelisted
 -others: The command is used on everyone EXCEPT you.
 -random: The command is used on a randomly picked person. (This random person will never be yourself)
 -me: The command is used on yourself.
+-[playername]: affects someone with the matching name (supports shortened names. (Example: Instead of typing 'RedWirePlatinum', you can just type 'redw'))
 --
 Commands:
 kick [plr]
@@ -694,55 +695,56 @@ changeblock (changes the block used in qclick spawn and blockspam)
 local getcmds = function()
 print(Commands)
 end
-lplr.Chatted:connect(function(msg)
+lplr.Chatted:connect(function(ms)
+local msg = ms:lower()
 local msg1, msg2, msg3 = unpack(pack(msg))
 local _msg = msg1:sub(Prefix:len()+1)
 if plrcommands[_msg] then
 plrcommands[_msg](msg2, msg3)
 end
-if msg == Prefix.."nobases" then
+if msg == Prefix:lower().."nobases" then
 delete(workspace.Bases)
 end
-if msg == Prefix.."clearws" then
+if msg == Prefix:lower().."clearws" then
 for i, g in pairs(workspace:GetChildren()) do
 if not game.Players:GetPlayerFromCharacter(g) then
 delete(g)
 end
 end
 end
-if msg == Prefix.."delete enemies" then
+if msg == Prefix:lower().."delete enemies" then
 for i, enemy in pairs(workspace.Mobs:GetChildren()) do
 delete(enemy)
 end
 end
-if msg == Prefix.."delete products" then
+if msg == Prefix:lower().."delete products" then
 for i, child in pairs(workspace:GetDescendants()) do
 if child.Name == "DevProducts" then
 delete(child)
 end
 end
 end
-if msg == Prefix.."zclick destroy" then
+if msg == Prefix:lower().."zclick destroy" then
 mouse.Button1Down:connect(function()
 if not game.UserInputService:IsKeyDown(Enum.KeyCode.Z) then return end
 if not mouse.Hit then return end
 delete(mouse.Target)
 end)
 end
-if msg == Prefix.."qclick spawn" then
+if msg == Prefix:lower().."qclick spawn" then
 mouse.Button1Down:connect(function()
 if not game.UserInputService:IsKeyDown(Enum.KeyCode.Q) then return end
 if not mouse.Hit then return end
 place(mouse.Hit, Selectedblock)
 end)
 end
-if msg == Prefix.."end server" then
+if msg == Prefix:lower().."end server" then
 for i, plr in pairs(plrs:GetPlayers()) do
 delete(plr)
 end
 game:shutdown()
 end
-if msg == Prefix.."xclick enemyspawn" then
+if msg == Prefix:lower().."xclick enemyspawn" then
 mouse.Button1Down:connect(function()
 if not game.UserInputService:IsKeyDown(Enum.KeyCode.X) then return end
 if not mouse.Hit then return end
@@ -762,10 +764,10 @@ Text = "Wait for enemies to spawn.";
 end
 end)
 end
-if msg == Prefix.."noenemies" then
+if msg == Prefix:lower().."noenemies" then
 delete(workspace.Mobs)
 end
-if msg == Prefix.."nocages" then
+if msg == Prefix:lower().."nocages" then
 for i, cage in pairs(workspace.Cages:GetChildren()) do
 for i, child in pairs(cage:GetChildren()) do
 if child.Name ~= "MobSpawn" then
@@ -774,13 +776,13 @@ end
 end
 end
 end
-if msg == Prefix.."getiy" then
+if msg == Prefix:lower().."getiy" then
 loadstring(game:HttpGet(('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'),true))()
 end
-if msg1 == Prefix.."ooftime" then
+if msg1 == Prefix:lower().."ooftime" then
 ooftime = tonumber(msg2)
 end
-if msg == Prefix.."partbypart" then
+if msg == Prefix:lower().."partbypart" then
 if workspace:FindFirstChild("Bases") then
 for i, base in pairs(workspace.Bases:GetChildren()) do
 coroutine.resume(coroutine.create(function()
@@ -798,21 +800,21 @@ wait()
 end
 end
 end
-if msg == Prefix.."removelighting" then
+if msg == Prefix:lower().."removelighting" then
 for i, v in pairs(game.Lighting:GetChildren()) do
 delete(v)
 end
 end
-if msg == Prefix.."enemyaura" then
+if msg == Prefix:lower().."enemyaura" then
 _G.mobaura = true
 end
-if msg == Prefix.."killaura" then
+if msg == Prefix:lower().."killaura" then
 _G.killaura = true
 end
-if msg1 == Prefix.."auravalue" then
+if msg1 == Prefix:lower().."auravalue" then
 aura = tonumber(msg2)
 end
-if msg == Prefix.."antibot" then
+if msg == Prefix:lower().."antibot" then
 plrs.PlayerAdded:connect(function(plr)
 plr:WaitForChild("leaderstats")
 plr.leaderstats:WaitForChild("Survived")
@@ -822,10 +824,10 @@ delete(plr)
 end
 end)
 end
-if msg == Prefix.."cmds" then
+if msg == Prefix:lower().."cmds" then
 getcmds()
 end
-if msg == Prefix.."getbannedplayers" then
+if msg == Prefix:lower().."getbannedplayers" then
 print("--List of banned players--")
 for i,v in pairs(_G.Players) do
 if v.Banned == true then
@@ -834,17 +836,17 @@ end
 end
 print("----")
 end
-if msg1 == Prefix.."changeprefix" then
+if msg1 == Prefix:lower().."changeprefix" then
 Prefix = msg2
-Prefixtxt.Text = "Admin executed lmao, prefix = "..Prefix
+Prefixtxt.Text = "Admin executed lmao, prefix = "..Prefix:lower()
 end
-if msg == Prefix.."unenemyaura" then
+if msg == Prefix:lower().."unenemyaura" then
 _G.mobaura = false
 end
-if msg == Prefix.."unkillaura" then
+if msg == Prefix:lower().."unkillaura" then
 _G.killaura = false
 end
-if msg == Prefix.."changeblock" then
+if msg == Prefix:lower().."changeblock" then
 game.StarterGui:SetCore("ChatMakeSystemMessage", {
 Text = "Click on an object to make it the new block.";
 Font = Enum.Font.Cartoon;})
@@ -865,7 +867,7 @@ end)
 getcmds()
 game.StarterGui:SetCore("SendNotification", {
 Title = title;
-Text = "Changed the admin just a little bit.";
+Text = "Chat commands no longer need to be lowercase (ex: ;ClearBase me).";
 Duration = 10;
 })
 end
