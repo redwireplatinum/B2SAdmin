@@ -39,7 +39,7 @@ end
 end
 return playertable
 end
-title = "Build to Survive Admin v6.3"
+title = "Build to Survive Admin v6.3.1"
 if game.ReplicatedStorage.PlayerEvents:FindFirstChild("e"..lplr.UserId) then
 delet = game.ReplicatedStorage.PlayerEvents["e"..lplr.UserId].DestroyItem
 else
@@ -48,12 +48,14 @@ Title = title;
 Text = "Admin is currently loading, check the developer log for more info.";
 Duration = 10;
 })
-print("The DestroyItem and PlaceItem remote events have not yet been added to the game.\n Sometimes servers fucking suck and will take a bit to add it,\nbe patient and the admin will load when the remote events are in the game.\n(Note: this will NOT load if the floor has been deleted and you keep dying for whatever reason.)")
+print("The DestroyItem and PlaceItem remote events have not yet been added to the game.\n Sometimes servers fucking suck and will take a bit to add it,\nbe patient and the admin will load when the remote events are in the game.\n(Note: this will NOT load if the floor has been deleted and/or if your base part has been deleted aswell.")
 local folder = game.ReplicatedStorage.PlayerEvents:WaitForChild("e"..lplr.UserId)
 folder:WaitForChild("DestroyItem")
 folder:WaitForChild("PlaceItem")
-delet = game.ReplicatedStorage.PlayerEvents["e"..lplr.UserId].DestroyItem
+delet = folder.DestroyItem
 end
+local Prefixtxt = lplr.PlayerGui.Interface.text
+Prefixtxt.Text = "Admin executed lmao, prefix = "..Prefix
 local delete = function(child)
 delet:FireServer(child)
 end
@@ -626,6 +628,13 @@ end
 local Commands = [[
 
 Default Prefix = ;
+--How player commands work:
+Anyone that is whitelisted will NOT be affected until unwhitelisted
+-all: The command is used on everyone.
+-others: The command is used on everyone EXCEPT you.
+-random: The command is used on a randomly picked person. (This random person will never be yourself)
+-me: The command is used on yourself.
+--
 Commands:
 kick [plr]
 kill [plr]
@@ -827,6 +836,7 @@ print("----")
 end
 if msg1 == Prefix.."changeprefix" then
 Prefix = msg2
+Prefixtxt.Text = "Admin executed lmao, prefix = "..Prefix
 end
 if msg == Prefix.."unenemyaura" then
 _G.mobaura = false
@@ -855,7 +865,7 @@ end)
 getcmds()
 game.StarterGui:SetCore("SendNotification", {
 Title = title;
-Text = "Added 'copybase', 'stealbase', 'changeblock' & changed ignoreplr to 'whitelist'.";
+Text = "Changed the admin just a little bit.";
 Duration = 10;
 })
 end
