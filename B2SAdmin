@@ -21,7 +21,6 @@ AdminSettings[v.UserId].Canbuild = true
 AdminSettings[v.UserId].Blockspam = false
 AdminSettings[v.UserId].Ignore = false
 end
-repeat wait() until AdminSettings
 for i,v in pairs(plrs:GetPlayers()) do
 addargs(v)
 end
