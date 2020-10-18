@@ -8,32 +8,32 @@ local plrs = game.Players
 local lplr = plrs.LocalPlayer
 local mouse = lplr:GetMouse()
 local plrcommands = {}
-_G.killaura = false
-_G.mobaura = false
+local killaura = false
+local mobaura = false
 local Prefix = ";"
-_G.Players = {}
+local AdminSettings = {}
 local addargs = function(v)
-_G.Players[v.UserId] = {}
-_G.Players[v.UserId].Username = v.Name
-_G.Players[v.UserId].Loopkill = false
-_G.Players[v.UserId].Banned = false
-_G.Players[v.UserId].Canbuild = true
-_G.Players[v.UserId].Blockspam = false
-_G.Players[v.UserId].Ignore = false
+AdminSettings[v.UserId] = {}
+AdminSettings[v.UserId].Username = v.Name
+AdminSettings[v.UserId].Loopkill = false
+AdminSettings[v.UserId].Banned = false
+AdminSettings[v.UserId].Canbuild = true
+AdminSettings[v.UserId].Blockspam = false
+AdminSettings[v.UserId].Ignore = false
 end
-repeat wait() until _G.Players
+repeat wait() until AdminSettings
 for i,v in pairs(plrs:GetPlayers()) do
 addargs(v)
 end
 plrs.PlayerAdded:connect(function(v)
-if not _G.Players[v.UserId] then
+if not AdminSettings[v.UserId] then
 addargs(v)
 end
 end)
 local all = function()
 local playertable = {}
 for i,v in pairs(plrs:GetPlayers()) do
-if _G.Players[v.UserId].Ignore == false then
+if AdminSettings[v.UserId].Ignore == false then
 table.insert(playertable, v)
 end
 end
@@ -132,14 +132,14 @@ end
 local pickplayerv2 = function(str, func, Vartable)
 local t = {}
 if str == "others" then
-for i,v in pairs(_G.Players) do
+for i,v in pairs(AdminSettings) do
 if v.Username ~= lplr.Name then 
 table.insert(t, v)
 end
 end
 elseif str == "random" then
 local var, bool = unpack(Vartable)
-for i,v in pairs(_G.Players) do
+for i,v in pairs(AdminSettings) do
 if v.Username ~= lplr.Name and v[var] == bool then 
 table.insert(t, v)
 end
@@ -148,17 +148,17 @@ local randomplrv2 = t[math.random(1, #t)]
 t = {}
 table.insert(t, randomplrv2)
 elseif str == "all" then
-for i,v in pairs(_G.Players) do
+for i,v in pairs(AdminSettings) do
 table.insert(t, v)
 end
 elseif str == "me" then
-for i,v in pairs(_G.Players) do
+for i,v in pairs(AdminSettings) do
 if v.Username == lplr.Name then 
 table.insert(t, v)
 end
 end
 else
-for i,v in pairs(_G.Players) do
+for i,v in pairs(AdminSettings) do
 if string.lower(v.Username):sub(1, string.len(str)) == string.lower(str) then
 table.insert(t, v)
 end
@@ -334,52 +334,51 @@ pickplayer(msg, _noaccessories)
 end
 game.RunService.Heartbeat:connect(function()
 for i, plr in pairs(all()) do
-if plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and _G.Players[plr.UserId].Blockspam == true then
+if plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and AdminSettings[plr.UserId].Blockspam == true then
 place(plr.Character.HumanoidRootPart.CFrame, Selectedblock)
 end
-if _G.Players[plr.UserId].Banned == true then
+if AdminSettings[plr.UserId].Banned == true then
 delete(plr)
 end
-if _G.Players[plr.UserId].Loopkill == true and plr.Character and lplr.Character:FindFirstChild("Head") and plr.Character.Head:FindFirstChild("Neck") then
+if AdminSettings[plr.UserId].Loopkill == true and plr.Character and lplr.Character:FindFirstChild("Head") and plr.Character.Head:FindFirstChild("Neck") then
 delete(plr.Character.Head.Neck)
 end
 end
 end)
-_G.plraura = function(child)
+local plraura = function(child)
     game.RunService.Heartbeat:connect(function()
 if lplr.Character and lplr.Character:FindFirstChild("HumanoidRootPart") and child:FindFirstChild("Head") and child.Head:FindFirstChild("Neck") and child.Name ~= lplr.Name then
 local pos = (lplr.Character.HumanoidRootPart.Position - child.Head.Position).Magnitude
-if pos < aura and _G.killaura == true then
+if pos < aura and killaura == true then
 delete(child.Head.Neck)
 end
 end
 end)
 end
-_G.enemyaura = function(child)
+local enemyaura = function(child)
     game.RunService.Heartbeat:connect(function()
 if lplr.Character and lplr.Character:FindFirstChild("HumanoidRootPart") and child.PrimaryPart then
 local pos = (lplr.Character.HumanoidRootPart.Position - child.PrimaryPart.Position).Magnitude
-if pos < aura and _G.mobaura == true then
+if pos < aura and mobaura == true then
 delete(child)
 end
 end
 end)
 end
-repeat wait() until _G.plraura and _G.enemyaura
 for i, mob in pairs(workspace.Mobs:GetChildren()) do
-_G.enemyaura(mob)
+enemyaura(mob)
 end
 workspace.Mobs.ChildAdded:connect(function(mob)
 mob:WaitForChild("HumanoidRootPart")
-_G.enemyaura(mob)
+enemyaura(mob)
 end)
 local ded = function(c)
 c.CharacterAdded:connect(function(chr)
-_G.plraura(chr)
+plraura(chr)
 end)
 end
 for i, player in pairs(all()) do
-_G.plraura(player.Character)
+plraura(player.Character)
 ded(player)
 end
 plrs.PlayerAdded:connect(function(c)
@@ -388,7 +387,7 @@ end)
 plrcommands.blockspam = function(msg)
 local _blockspam = function(getplrs)
 for i, plr in pairs(getplrs) do
-_G.Players[plr.UserId].Blockspam = true
+AdminSettings[plr.UserId].Blockspam = true
 end
 end
 pickplayer(msg, _blockspam)
@@ -396,7 +395,7 @@ end
 plrcommands.unblockspam = function(msg)
 local _unblockspam = function(getplrs)
 for i, plr in pairs(getplrs) do
-_G.Players[plr.UserId].Blockspam = false
+AdminSettings[plr.UserId].Blockspam = false
 end
 end
 pickplayer(msg, _unblockspam)
@@ -444,7 +443,7 @@ local setvalue = function(getplrs)
 for i, v in pairs(getplrs) do
 for i, base in pairs(workspace.Bases:GetChildren()) do
 if base.Owner.Value == v.UserId then
-_G.Players[base.Owner.Value].Canbuild = stringtobool(boolval)
+AdminSettings[base.Owner.Value].Canbuild = stringtobool(boolval)
 end
 end
 end
@@ -454,7 +453,7 @@ end
 plrcommands.ban = function(msg)
 local _ban = function(getplrs)
 for i, plr in pairs(getplrs) do
-_G.Players[plr.UserId].Banned = true
+AdminSettings[plr.UserId].Banned = true
 end
 end
 pickplayer(msg, _ban)
@@ -525,7 +524,7 @@ end
 for i, v in pairs(workspace.Bases:GetChildren()) do
 v.Blocks.ChildAdded:connect(function(block)
 wait(0.2)
-if _G.Players[v.Owner.Value] and _G.Players[v.Owner.Value].Canbuild == false then
+if AdminSettings[v.Owner.Value] and AdminSettings[v.Owner.Value].Canbuild == false then
 delete(block)
 end
 end)
@@ -533,7 +532,7 @@ end
 plrcommands.loopkill = function(msg)
 local _loopkill = function(getplrs)
 for i, v in pairs(getplrs) do
-_G.Players[v.UserId].Loopkill = true
+AdminSettings[v.UserId].Loopkill = true
 end
 end
 pickplayer(msg, _loopkill)
@@ -541,7 +540,7 @@ end
 plrcommands.unloopkill = function(msg)
 local _unloopkill = function(getplrs)
 for i,v in pairs(getplrs) do
-_G.Players[v.UserId].Loopkill = false
+AdminSettings[v.UserId].Loopkill = false
 end
 end
 pickplayer(msg, _unloopkill)
@@ -549,7 +548,7 @@ end
 plrcommands.whitelist = function(msg)
 local _whitelist = function(getplrs)
 for i,v in pairs(getplrs) do
-_G.Players[v.UserId].Ignore = true
+AdminSettings[v.UserId].Ignore = true
 end
 end
 pickplayer(msg, _whitelist)
@@ -806,10 +805,10 @@ delete(v)
 end
 end
 if msg == Prefix:lower().."enemyaura" then
-_G.mobaura = true
+mobaura = true
 end
 if msg == Prefix:lower().."killaura" then
-_G.killaura = true
+killaura = true
 end
 if msg1 == Prefix:lower().."auravalue" then
 aura = tonumber(msg2)
@@ -829,7 +828,7 @@ getcmds()
 end
 if msg == Prefix:lower().."getbannedplayers" then
 print("--List of banned players--")
-for i,v in pairs(_G.Players) do
+for i,v in pairs(AdminSettings) do
 if v.Banned == true then
 print(v.Username)
 end
@@ -841,10 +840,10 @@ Prefix = msg2
 Prefixtxt.Text = "Admin executed lmao, prefix = "..Prefix:lower()
 end
 if msg == Prefix:lower().."unenemyaura" then
-_G.mobaura = false
+mobaura = false
 end
 if msg == Prefix:lower().."unkillaura" then
-_G.killaura = false
+killaura = false
 end
 if msg == Prefix:lower().."changeblock" then
 game.StarterGui:SetCore("ChatMakeSystemMessage", {
