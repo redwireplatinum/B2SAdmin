@@ -38,7 +38,7 @@ end
 end
 return playertable
 end
-title = "Build to Survive Admin v6.3.2"
+title = "Build to Survive Admin"
 if game.ReplicatedStorage.PlayerEvents:FindFirstChild("e"..lplr.UserId) then
 delet = game.ReplicatedStorage.PlayerEvents["e"..lplr.UserId].DestroyItem
 else
