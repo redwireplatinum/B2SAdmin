@@ -745,7 +745,7 @@ function enemyspawntool()
 local enemyspawner = Instance.new("Tool", lplr.Backpack)
 enemyspawner.Name = "Enemy Spawner"
 enemyspawner.RequiresHandle = false
-enemyspawner.ToolTip = "Spawns additional enemys that won't despawn (until you clear your base)"
+enemyspawner.ToolTip = "Spawns additional enemies that won't despawn (until you clear your base)"
 enemyspawner.Activated:connect(function()
 local enemy
 for i, mob in pairs(workspace.Mobs:GetChildren()) do
