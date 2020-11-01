@@ -674,7 +674,7 @@ noface [plr]
 killaura
 unkillaura
 auravalue [num] (sets value for the killaura and enemyaura cmd, is defaulted to 20)
-antibot (attempts to remove bots from entering the game by auto kicking a player if their Survived value is 0)
+antibot (attempts to remove bots from entering the game by auto kicking a player if their Survived value is 0 AND if their account is under 30 days old)
 cmds (re-prints list of commands in case something happens in the dev log)
 ban [plr]
 unban [plr]
@@ -686,7 +686,7 @@ whitelist [plr] (Excludes certain players COMPLETELY when using player commands)
 unwhitelist [plr]
 copybase [plr]
 stealbase [plr]
-changeblock (changes the block used in qclick spawn and blockspam)
+changeblock (changes the block used in the spawner tool and blockspam)
 ]]
 local getcmds = function()
 print(Commands)
