@@ -725,6 +725,7 @@ function makedestroytool()
 local destroytool = Instance.new("Tool", lplr.Backpack)
 destroytool.Name = "Click Destroy"
 destroytool.RequiresHandle = false
+destroytool.ToolTip = "Destroy whatever you please."
 destroytool.Activated:connect(function()
 if mouse.Target then
 delete(mouse.Target)
@@ -735,6 +736,7 @@ function makespawntool()
 local spawntool = Instance.new("Tool", lplr.Backpack)
 spawntool.Name = "Block Spawner"
 spawntool.RequiresHandle = false
+spawntool.ToolTip = "Spawns blocks anywhere you want (can be changed using changeblock)"
 spawntool.Activated:connect(function()
 place(mouse.Hit, Selectedblock)
 end)
@@ -743,6 +745,7 @@ function enemyspawntool()
 local enemyspawner = Instance.new("Tool", lplr.Backpack)
 enemyspawner.Name = "Enemy Spawner"
 enemyspawner.RequiresHandle = false
+enemyspawner.ToolTip = "Spawns additional enemys that won't despawn (until you clear your base)"
 enemyspawner.Activated:connect(function()
 local enemy
 for i, mob in pairs(workspace.Mobs:GetChildren()) do
