@@ -643,9 +643,7 @@ clearbase [plr]
 removebase [plr] (like clear base except it removes blocks one at a time [USE THIS ON YOURSELF IF YOU USED BLOCKSPAM OR ELSE YOU COULD BE KICKED (I guess roblox's anticheat fires if a remote event or something is doing too many things at once.)]
 delete products (Deletes the annoying things like the visible laser gun, doge and others)
 delete enemies
-zclick destroy (FE click destroy except its Z + Left Click)
-qclick spawn (Spawns green blocks where ever you want)
-xclick enemyspawn (Spawn additional enemies if enemies are on the map)
+b2stools (Spawns in FE tools in this order: destroy tool, spawn tool, and enemy spawner tool, which all work with a simple click.)
 end server
 cripple [plr]
 removelimbs [plr]
@@ -722,30 +720,30 @@ delete(child)
 end
 end
 end
-if msg == Prefix:lower().."zclick destroy" then
-mouse.Button1Down:connect(function()
-if not game.UserInputService:IsKeyDown(Enum.KeyCode.Z) then return end
-if not mouse.Hit then return end
+if msg == Prefix:lower().."b2stools" then
+function makedestroytool()
+local destroytool = Instance.new("Tool", lplr.Backpack)
+destroytool.Name = "Click Destroy"
+destroytool.RequiresHandle = false
+destroytool.Activated:connect(function()
+if mouse.Target then
 delete(mouse.Target)
+end
 end)
 end
-if msg == Prefix:lower().."qclick spawn" then
-mouse.Button1Down:connect(function()
-if not game.UserInputService:IsKeyDown(Enum.KeyCode.Q) then return end
-if not mouse.Hit then return end
+function makespawntool()
+local spawntool = Instance.new("Tool", lplr.Backpack)
+spawntool.Name = "Block Spawner"
+spawntool.RequiresHandle = false
+spawntool.Activated:connect(function()
 place(mouse.Hit, Selectedblock)
 end)
 end
-if msg == Prefix:lower().."end server" then
-for i, plr in pairs(plrs:GetPlayers()) do
-delete(plr)
-end
-game:shutdown()
-end
-if msg == Prefix:lower().."xclick enemyspawn" then
-mouse.Button1Down:connect(function()
-if not game.UserInputService:IsKeyDown(Enum.KeyCode.X) then return end
-if not mouse.Hit then return end
+function enemyspawntool()
+local enemyspawner = Instance.new("Tool", lplr.Backpack)
+enemyspawner.Name = "Enemy Spawner"
+enemyspawner.RequiresHandle = false
+enemyspawner.Activated:connect(function()
 local enemy
 for i, mob in pairs(workspace.Mobs:GetChildren()) do
 if mob then
@@ -761,6 +759,23 @@ Text = "Wait for enemies to spawn.";
 })
 end
 end)
+end
+makedestroytool()
+makespawntool()
+enemyspawntool()
+lplr.ChildAdded:connect(function(c)
+if c.Name == "Backpack" then
+makedestroytool()
+makespawntool()
+enemyspawntool()
+end
+end)
+end
+if msg == Prefix:lower().."end server" then
+for i, plr in pairs(plrs:GetPlayers()) do
+delete(plr)
+end
+game:shutdown()
 end
 if msg == Prefix:lower().."noenemies" then
 delete(workspace.Mobs)
@@ -865,7 +880,7 @@ end)
 getcmds()
 game.StarterGui:SetCore("SendNotification", {
 Title = title;
-Text = "Chat commands no longer need to be lowercase (ex: ;Cripple Others).";
+Text = "Combined zclick destroy, qclick spawn, and xclick enemyspawn all into a 'b2stools' command.";
 Duration = 10;
 })
 end
