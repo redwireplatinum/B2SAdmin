@@ -686,8 +686,7 @@ whitelist [plr] (Excludes certain players COMPLETELY when using player commands)
 unwhitelist [plr]
 copybase [plr]
 stealbase [plr]
-changeblock (changes the block used in the spawner tool and blockspam)
-]]
+changeblock (changes the block used in the spawner tool and blockspam)]]
 local getcmds = function()
 print(Commands)
 end
