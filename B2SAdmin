@@ -1,7 +1,4 @@
 if not _G.B2SAdmin then
--- Farewell Infortality.
--- Version: 2.82
--- Instances:
 local FeedbackUI = Instance.new("ScreenGui")
 local frame = Instance.new("Frame")
 local Header = Instance.new("TextLabel")
@@ -115,6 +112,7 @@ local plrs = game.Players
 local lplr = plrs.LocalPlayer
 local mouse = lplr:GetMouse()
 local plrcommands = {}
+local permbantable
 local killaura = false
 local mobaura = false
 local Prefix = ";"
@@ -127,6 +125,7 @@ AdminSettings[v.UserId].Banned = false
 AdminSettings[v.UserId].Canbuild = true
 AdminSettings[v.UserId].Blockspam = false
 AdminSettings[v.UserId].Ignore = false
+AdminSettings[v.UserId].PermBanned = false
 end
 for i,v in pairs(plrs:GetPlayers()) do
 addargs(v)
@@ -164,6 +163,130 @@ local Prefixtxt = lplr.PlayerGui.Interface.text
 Prefixtxt.Text = "Admin executed lmao, prefix = "..Prefix:lower()
 local delete = function(child)
 delet:FireServer(child)
+end
+local GetFullName = function(ins)
+local Pathway = {}
+function GetFamily(v)
+if v.Parent ~= nil then
+        table.insert(Pathway, 1, v)
+        GetFamily(v.Parent)
+    else
+       table.insert(Pathway, 1, v)
+    end
+end
+GetFamily(ins)
+local Services = {'Workspace','RunService','GuiService','Stats','SoundService','NonReplicatedCSGDictionaryService','CSGDictionaryService','LogService','ContentProvider','KeyframeSequenceProvider','Chat','MarketplaceService','Players','PointsService','AdService','NotificationService','ReplicatedFirst','HttpRbxApiService','TweenService','TextService','StudioData','StarterPlayer','StarterPack','StarterGui','CoreGui','LocalizationService','TeleportService','JointsService','CollectionService','PhysicsService','BadgeService','Geometry','FriendService','InsertService','GamePassService','Debris','TimerService','CookiesService','UserInputService','KeyboardService','MouseService','VRService','ContextActionService','ScriptService','AssetService','TouchInputService','BrowserService','AppStorageService','AnalyticsService','ScriptContext','','Selection','MeshContentProvider','Lighting','SolidModelContentProvider','GamepadService','ControllerService','CorePackages','RuntimeScriptService','ABTestService','HttpService','RobloxReplicatedStorage','HapticService','RbxAnalyticsService','NetworkClient','EventIngestService','ChangeHistoryService','Visit','GuidRegistryService','PermissionsService','Teams','ReplicatedStorage','TestService','SocialService','PolicyService','MemStorageService','GroupService','SpawnerService','PathfindingService'}
+function c(ss)
+local s = tostring(ss)
+local oof = ""
+for i = 1, s:len() do
+    if s:sub(i,i):find("%p") then
+    oof = oof.."\\"..s:sub(i,i)
+    elseif s:sub(i,i) == "\n" then
+    oof = oof.."\\n"..s:sub(i-1,i-1)
+    else
+    oof = oof..s:sub(i,i)
+end
+end
+if oof:find("%A") then
+return "['"..oof.."']"
+else
+return "."..oof
+end
+end
+local fns = ""
+for i,v in pairs(Pathway) do
+if i == 1 then
+    fns = v.Name
+else
+    if i == 2 then
+        if table.find(Services, v.ClassName) then
+            fns = fns..c(v.ClassName)
+        else
+            fns = fns..c(v.Name)
+        end
+else
+fns = fns..c(v.Name)
+end
+end
+end
+return fns
+end
+local tabletostring = function(Table, IncludeWhitespaces)
+    local s = "{"
+    if IncludeWhitespaces then
+        s = "{\n"
+    end
+    function stringmethod(i,v)
+	function fixstring(s)
+	local oof = ""
+	for i = 1, s:len() do
+	if s:sub(i,i):find("%p") then
+    oof = oof.."\\"..s:sub(i,i)
+    elseif s:sub(i,i) == "\n" then
+    oof = oof.."\\n"..s:sub(i-1,i-1)
+    else
+    oof = oof..s:sub(i,i)
+	end
+	end
+	return oof
+	end
+        local String = ", "
+        local part1 = ""
+        local part2 = ""
+function modify(test, IncludeBrackets)
+	local st = ""
+	local supportedtypes = {"number", "boolean", "string", "Enums", "table", "Instance", "Vector3", "CFrame", "Color3", "BrickColor"}
+        if type(test) == "number" or typeof(test) == "Enums" or type(test) == "boolean" then
+            st = tostring(test)
+        elseif type(test) == "string" then
+            st = "'"..fixstring(test).."'"
+        elseif type(test) == "table" then
+			st = _G.tabletostring(test, IncludeWhitespaces)
+		elseif typeof(test) == "Instance" then
+			st = GetFullName(test)
+		elseif typeof(test) == "Vector3" or typeof(test) == "CFrame" or typeof(test) == "Color3" then
+			st = typeof(test)..".new("..tostring(test)..")"
+		elseif typeof(test) == "BrickColor" then
+			st = typeof(test)..".new('"..tostring(test).."')"
+		else
+		st = tostring(test)
+		end
+	if IncludeBrackets then
+		st = "["..st.."]"
+	end
+	if not table.find(supportedtypes, type(test)) and not table.find(supportedtypes, typeof(test)) then
+		if not IncludeBrackets then
+		error("Whitespaces must be enabled.")
+		else
+		part1 = "--"..part1
+		end
+	end
+	return st
+end
+        if IncludeWhitespaces then
+            String = ",\n"
+        end
+        part1 = modify(i, true)
+        part2 = modify(v)
+        return part1.." = "..part2..String
+    end
+    for i,v in pairs(Table) do
+        s = s..stringmethod(i,v)
+    end
+    if not IncludeWhitespaces then
+    s = s:sub(1,s:len()-2).."}"
+    else
+    s = s:sub(1,s:len()-2).."\n}"
+    end
+    return s
+end
+if not isfile("PermBannedPlayers.B2S") then
+writefile("PermBannedPlayers.B2S", "{}")
+else
+loadstring("_G.ImportTable = "..readfile("PermBannedPlayers.B2S"))()
+permbantable = _G.ImportTable
+_G.ImportTable = nil
 end
 local stringtobool = function(str)
 if str == "true" then
@@ -235,38 +358,39 @@ end
 end
 func(playertable)
 end
-local pickplayerv2 = function(str, func, Vartable)
+local pickplayerv2 = function(str, func, var)
 local t = {}
 if str == "others" then
 for i,v in pairs(AdminSettings) do
 if v.Username ~= lplr.Name then 
-table.insert(t, v)
+t[i] = v
 end
 end
 elseif str == "random" then
-local var, bool = unpack(Vartable)
+local idk = {}
 for i,v in pairs(AdminSettings) do
-if v.Username ~= lplr.Name and v[var] == bool then 
-table.insert(t, v)
+if v.Username ~= lplr.Name and v[var] == true then 
+t[i] = v
+table.insert(idk, i)
 end
 end
-local randomplrv2 = t[math.random(1, #t)]
+local randomplrv2 = t[idk[math.random(1, #idk)]]
 t = {}
 table.insert(t, randomplrv2)
 elseif str == "all" then
 for i,v in pairs(AdminSettings) do
-table.insert(t, v)
+t[i] = v
 end
 elseif str == "me" then
 for i,v in pairs(AdminSettings) do
 if v.Username == lplr.Name then 
-table.insert(t, v)
+t[i] = v
 end
 end
 else
 for i,v in pairs(AdminSettings) do
 if string.lower(v.Username):sub(1, string.len(str)) == string.lower(str) then
-table.insert(t, v)
+t[i] = v
 end
 end
 end
@@ -443,7 +567,7 @@ for i, plr in pairs(all()) do
 if plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and AdminSettings[plr.UserId].Blockspam == true then
 place(plr.Character.HumanoidRootPart.CFrame, Selectedblock)
 end
-if AdminSettings[plr.UserId].Banned == true then
+if AdminSettings[plr.UserId].Banned == true or AdminSettings[plr.UserId].PermBanned == true then
 delete(plr)
 end
 if AdminSettings[plr.UserId].Loopkill == true and plr.Character and lplr.Character:FindFirstChild("Head") and plr.Character.Head:FindFirstChild("Neck") then
@@ -570,7 +694,7 @@ for i, plr in pairs(getplrs) do
 plr.Banned = false
 end
 end
-pickplayerv2(msg, _unban, {"Banned", true})
+pickplayerv2(msg, _unban, "Banned")
 end
 plrcommands.blockhead = function(msg)
 local _blockhead = function(getplrs)
@@ -665,7 +789,7 @@ for i, plr in pairs(getplrs) do
 plr.Ignore = false
 end
 end
-pickplayerv2(msg, _unwhitelist, {"Ignore", true})
+pickplayerv2(msg, _unwhitelist, "Ignore")
 end
 plrcommands.copybase = function(msg)
 local _copybase = function(getplrs)
@@ -729,6 +853,32 @@ end
 end
 end
 pickplayer(msg, _stealbase)
+end
+plrcommands.permban = function(msg)
+local _permban = function(getplrs)
+for i,v in pairs(getplrs) do
+AdminSettings[v.UserId].PermBanned = true
+if not table.find(permbantable, v.UserId) then
+table.insert(permbantable, v.UserId)
+end
+end
+end
+pickplayer(msg, _permban)
+writefile("PermBannedPlayers.B2S", tabletostring(permbantable))
+end
+plrcommands.unpermban = function(msg)
+local _unpermban = function(getplrs)
+for id, info in pairs(getplrs) do
+info.PermBanned = false
+for a, bannedid in pairs(permbantable) do
+if id == bannedid then
+table.remove(permbantable, a)
+end
+end
+end
+end
+pickplayerv2(msg, _unpermban, "PermBanned")
+writefile("PermBannedPlayers.B2S", tabletostring(permbantable))
 end
 local Commands = [[
 
@@ -794,7 +944,9 @@ unwhitelist [plr]
 copybase [plr]
 stealbase [plr]
 changeblock (changes the block used in the spawner tool and blockspam)
-feedback (Opens a feedback UI, Synapse only (uses syn.request))]]
+feedback (Opens a feedback UI, Synapse only (uses syn.request))
+permban
+unpermban]]
 local getcmds = function()
 print(Commands)
 end
@@ -993,7 +1145,7 @@ end)
 getcmds()
 game.StarterGui:SetCore("SendNotification", {
 Title = title;
-Text = "Added a feedback UI for issues and suggestions.";
+Text = "Finally added perma-banning (commands are 'permban' and 'unpermban').";
 Duration = 10;
 })
 end
