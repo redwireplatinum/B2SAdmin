@@ -567,6 +567,9 @@ for i, plr in pairs(all()) do
 if plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and AdminSettings[plr.UserId].Blockspam == true then
 place(plr.Character.HumanoidRootPart.CFrame, Selectedblock)
 end
+if table.find(permbantable, plr.UserId) then
+AdminSettings[plr.UserId].PermBanned = true
+end
 if AdminSettings[plr.UserId].Banned == true or AdminSettings[plr.UserId].PermBanned == true then
 delete(plr)
 end
