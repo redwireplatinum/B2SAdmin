@@ -112,7 +112,7 @@ local plrs = game.Players
 local lplr = plrs.LocalPlayer
 local mouse = lplr:GetMouse()
 local plrcommands = {}
-local permbantable
+local permbantable = {}
 local killaura = false
 local mobaura = false
 local Prefix = ";"
@@ -1148,7 +1148,7 @@ end)
 getcmds()
 game.StarterGui:SetCore("SendNotification", {
 Title = title;
-Text = "Finally added perma-banning (commands are 'permban' and 'unpermban').";
+Text = "Fixed an error where permbanning wouldn't work if PermBannedPlayers.B2S doesn't exist.";
 Duration = 10;
 })
 end
