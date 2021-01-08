@@ -872,12 +872,12 @@ end
 plrcommands.unpermban = function(msg)
 local _unpermban = function(getplrs)
 for id, info in pairs(getplrs) do
-info.PermBanned = false
 for a, bannedid in pairs(permbantable) do
 if id == bannedid then
 table.remove(permbantable, a)
 end
 end
+info.PermBanned = false
 end
 end
 pickplayerv2(msg, _unpermban, "PermBanned")
