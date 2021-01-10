@@ -1154,7 +1154,7 @@ end)
 getcmds()
 game.StarterGui:SetCore("SendNotification", {
 Title = title;
-Text = "Fixed an error where permbanning wouldn't work if PermBannedPlayers.B2S doesn't exist.";
+Text = "Slightly changed the tabletostring function.";
 Duration = 10;
 })
 end
