@@ -269,7 +269,13 @@ end
         end
         part1 = modify(i, true)
         part2 = modify(v)
+        local count = 0
+		for i,v in pairs(Table) do count = count + 1 end
+		if count ~= #Table then
         return part1.." = "..part2..String
+		else
+		return part2..String
+		end
     end
     for i,v in pairs(Table) do
         s = s..stringmethod(i,v)
