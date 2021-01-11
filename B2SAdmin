@@ -647,7 +647,7 @@ for i, child in pairs(workspace.Bases:GetChildren()) do
 if child.Owner.Value == plr.UserId then
 for i, block in pairs(child.Blocks:GetChildren()) do
 delete(block)
-wait()
+game.RunService.RenderStepped:Wait()
 end
 end
 end
@@ -1069,18 +1069,16 @@ end
 if msg == Prefix:lower().."partbypart" then
 if workspace:FindFirstChild("Bases") then
 for i, base in pairs(workspace.Bases:GetChildren()) do
-coroutine.resume(coroutine.create(function()
 for i, block in pairs(base.Blocks:GetChildren()) do
 delete(block)
-wait()
+game.RunService.RenderStepped:Wait()
 end
-end))
 end
 end
 for i, b in pairs(workspace:GetDescendants()) do
 if b:IsA("BasePart") then
 delete(b)
-wait()
+game.RunService.RenderStepped:Wait()
 end
 end
 end
@@ -1154,7 +1152,7 @@ end)
 getcmds()
 game.StarterGui:SetCore("SendNotification", {
 Title = title;
-Text = "Slightly changed the tabletostring function.";
+Text = "Increased block deletion speed for removebase and partbypart.";
 Duration = 10;
 })
 end
