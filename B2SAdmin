@@ -1152,7 +1152,7 @@ end)
 getcmds()
 game.StarterGui:SetCore("SendNotification", {
 Title = title;
-Text = "Increased block deletion speed for removebase and partbypart.";
+Text = "Increased the block deletion speed rate for removebase and partbypart.";
 Duration = 10;
 })
 end
