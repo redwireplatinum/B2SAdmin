@@ -954,7 +954,7 @@ copybase [plr]
 stealbase [plr]
 changeblock (changes the block used in the spawner tool and blockspam)
 feedback (Opens a feedback UI, Synapse only (uses syn.request))
-permban (The list of perm-banned players is in your exploit's workspace folder, named "PermBannedPlayers.B2S". If you accidentally ban yourself, open the file and find something that looks like "[3] = InsertYourUserIdHere" and remove it as well as any unnecessary commas so the table doesn't break. Deleting the file will reset the table, un-banning everyone.)
+permban (The list of perm-banned players is in your exploit's workspace folder, named "PermBannedPlayers.B2S". If you accidentally ban yourself, open the file, search for your UserId, and remove it as well as any unnecessary commas so the table doesn't break. Deleting the file will reset the table, un-banning everyone.)
 unpermban]]
 local getcmds = function()
 print(Commands)
