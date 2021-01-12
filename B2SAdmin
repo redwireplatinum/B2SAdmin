@@ -380,8 +380,10 @@ t[i] = v
 table.insert(idk, i)
 end
 end
-local randomplrv2 = t[idk[math.random(1, #idk)]]
+local id = idk[math.random(1, #idk)]
+local randomplrv2 = t[id]
 t = {}
+t[id] = randomplrv2
 table.insert(t, randomplrv2)
 elseif str == "all" then
 for i,v in pairs(AdminSettings) do
@@ -1152,7 +1154,7 @@ end)
 getcmds()
 game.StarterGui:SetCore("SendNotification", {
 Title = title;
-Text = "Increased the block deletion speed rate for removebase and partbypart.";
+Text = "Fixed... something.";
 Duration = 10;
 })
 end
