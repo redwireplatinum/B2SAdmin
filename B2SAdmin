@@ -124,7 +124,7 @@ AdminSettings[v.UserId].Loopkill = false
 AdminSettings[v.UserId].Banned = false
 AdminSettings[v.UserId].Canbuild = true
 AdminSettings[v.UserId].Blockspam = false
-AdminSettings[v.UserId].Ignore = false
+AdminSettings[v.UserId].Whitelisted = false
 AdminSettings[v.UserId].PermBanned = false
 end
 for i,v in pairs(plrs:GetPlayers()) do
@@ -138,7 +138,7 @@ end)
 local all = function()
 local playertable = {}
 for i,v in pairs(plrs:GetPlayers()) do
-if AdminSettings[v.UserId].Ignore == false then
+if AdminSettings[v.UserId].Whitelisted == false then
 table.insert(playertable, v)
 end
 end
@@ -788,7 +788,7 @@ end
 plrcommands.whitelist = function(msg)
 local _whitelist = function(getplrs)
 for i,v in pairs(getplrs) do
-AdminSettings[v.UserId].Ignore = true
+AdminSettings[v.UserId].Whitelisted = true
 end
 end
 pickplayer(msg, _whitelist)
@@ -796,7 +796,7 @@ end
 plrcommands.unwhitelist = function(msg)
 local _unwhitelist = function(getplrs)
 for i, plr in pairs(getplrs) do
-plr.Ignore = false
+plr.Whitelisted = false
 end
 end
 pickplayerv2(msg, _unwhitelist, "Ignore")
