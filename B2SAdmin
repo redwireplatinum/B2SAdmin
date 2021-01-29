@@ -657,27 +657,6 @@ end
 end
 pickplayer(msg, _removebase)
 end
-plrcommands.thanossnap = function(msg)
-local _thanossnap = function(getplrs)
-for i, plr in pairs(getplrs) do
-coroutine.resume(coroutine.create(function()
-for i, t in pairs(plr.Character:GetChildren()) do
-delete(t)
-wait(0.1)
-end
-wait(0.1)
-delete(plr.Character)
-for i, b in pairs(plr:GetChildren()) do
-delete(b)
-wait(0.1)
-end
-wait(0.1)
-delete(plr)
-end))
-end
-end
-pickplayer(msg, _thanossnap)
-end
 plrcommands.canbuild = function(msg, boolval)
 local setvalue = function(getplrs)
 for i, v in pairs(getplrs) do
@@ -932,7 +911,7 @@ enemyaura (Automatically deletes enemies when nearby)
 unenemyaura
 blockspam [plr]
 unblockspam [plr]
-thanossnap [plr]
+thanossnap
 canbuild [plr] [true/false] (changes a players ability to add blocks to their base)
 blockhead [plr]
 noanim [plr]
@@ -1149,11 +1128,16 @@ end
 if msg == Prefix:lower().."feedback" then
 frame.Visible = true
 end
+if msg == Prefix:lower().."thanossnap" then
+for i = 1, math.ceil(#all()/2) do
+plrcommands.kick("random")
+end
+end
 end)
 getcmds()
 game.StarterGui:SetCore("SendNotification", {
 Title = title;
-Text = "Fixed... something.";
+Text = "The thanossnap cmd is now an actual thanos snap, but is no longer a player cmd.";
 Duration = 10;
 })
 end
