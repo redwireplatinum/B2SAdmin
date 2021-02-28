@@ -113,6 +113,21 @@ local lplr = plrs.LocalPlayer
 local mouse = lplr:GetMouse()
 local plrcommands = {}
 local permbantable = {}
+if not isfile("PermBannedPlayers.B2S") then
+writefile("PermBannedPlayers.B2S", "{}")
+else
+loadstring("_G.ImportTable = "..readfile("PermBannedPlayers.B2S"))()
+permbantable = _G.ImportTable
+_G.ImportTable = nil
+end
+local savedbases = {}
+if not isfile("SavedBases.B2S") then
+writefile("SavedBases.B2S", "{}")
+else
+loadstring("_G.SavedBases = "..readfile("SavedBases.B2S"))()
+savedbases = _G.SavedBases
+_G.SavedBases = nil
+end
 local killaura = false
 local mobaura = false
 local Prefix = ";"
@@ -212,7 +227,7 @@ end
 end
 return fns
 end
-local tabletostring = function(Table, IncludeWhitespaces)
+function tabletostring(Table, IncludeWhitespaces)
     local s = "{"
     if IncludeWhitespaces then
         s = "{\n"
@@ -236,20 +251,21 @@ local tabletostring = function(Table, IncludeWhitespaces)
         local part2 = ""
 function modify(test, IncludeBrackets)
 	local st = ""
-	local supportedtypes = {"number", "boolean", "string", "Enums", "table", "Instance", "Vector3", "CFrame", "Color3", "BrickColor"}
-        if type(test) == "number" or typeof(test) == "Enums" or type(test) == "boolean" then
+	local supportedtypes = {"number", "boolean", "string", "EnumItem", "table", "Instance", "Vector3", "CFrame", "Color3", "BrickColor","Enum"}
+        if type(test) == "number" or typeof(test) == "EnumItem" or type(test) == "boolean" then
             st = tostring(test)
         elseif type(test) == "string" then
             st = "'"..fixstring(test).."'"
         elseif type(test) == "table" then
-			st = _G.tabletostring(test, IncludeWhitespaces)
+			st = tabletostring(test, IncludeWhitespaces)
 		elseif typeof(test) == "Instance" then
 			st = GetFullName(test)
 		elseif typeof(test) == "Vector3" or typeof(test) == "CFrame" or typeof(test) == "Color3" then
 			st = typeof(test)..".new("..tostring(test)..")"
 		elseif typeof(test) == "BrickColor" then
 			st = typeof(test)..".new('"..tostring(test).."')"
-		else
+		elseif typeof(test) == "Enum" then
+		    st = "Enum."..tostring(test)
 		st = tostring(test)
 		end
 	if IncludeBrackets then
@@ -269,13 +285,9 @@ end
         end
         part1 = modify(i, true)
         part2 = modify(v)
-        local count = 0
+		local count = 0
 		for i,v in pairs(Table) do count = count + 1 end
-		if count ~= #Table then
         return part1.." = "..part2..String
-		else
-		return part2..String
-		end
     end
     for i,v in pairs(Table) do
         s = s..stringmethod(i,v)
@@ -286,13 +298,6 @@ end
     s = s:sub(1,s:len()-2).."\n}"
     end
     return s
-end
-if not isfile("PermBannedPlayers.B2S") then
-writefile("PermBannedPlayers.B2S", "{}")
-else
-loadstring("_G.ImportTable = "..readfile("PermBannedPlayers.B2S"))()
-permbantable = _G.ImportTable
-_G.ImportTable = nil
 end
 local stringtobool = function(str)
 if str == "true" then
@@ -935,7 +940,12 @@ stealbase [plr]
 changeblock (changes the block used in the spawner tool and blockspam)
 feedback (Opens a feedback UI, Synapse only (uses syn.request))
 permban (The list of perm-banned players is in your exploit's workspace folder, named "PermBannedPlayers.B2S". If you accidentally ban yourself, open the file, search for your UserId, and remove it as well as any unnecessary commas so the table doesn't break. Deleting the file will reset the table, un-banning everyone.)
-unpermban]]
+unpermban
+savebase
+loadbase (basename)
+getsavedbases
+deletebase (basename)
+renamebase (basename) (newbasename)]]
 local getcmds = function()
 print(Commands)
 end
@@ -1133,11 +1143,95 @@ for i = 1, math.ceil(#all()/2) do
 plrcommands.kick("random")
 end
 end
+if msg == Prefix:lower().."savebase" then
+local BaseName = ""
+for i = 1, math.huge do
+    if not savedbases["Base"..i] then
+        BaseName = "Base"..i
+    break
+end
+end
+savedbases[BaseName] = {}
+local plrbase
+for i, Base in pairs(workspace.Bases:GetChildren()) do
+    if Base.Owner.Value == lplr.UserId then
+    plrbase = Base
+end
+end
+savedbases[BaseName].Base = plrbase.Name
+savedbases[BaseName].Blocks = {}
+for i1,Block in pairs(plrbase.Blocks:GetChildren()) do
+  for i2, v in pairs(game.ReplicatedStorage.GameItems:GetChildren()) do
+      for i3, Item in pairs(v:GetChildren()) do
+          if Block.Name == Item.Name then
+              if Block.ClassName == "Model" then
+            table.insert(savedbases[BaseName].Blocks, {["Child"] = Item, ["CFrame"] = Block.PrimaryPart.CFrame})
+              elseif Block.ClassName == "Part" then
+            table.insert(savedbases[BaseName].Blocks, {["Child"] = Item, ["CFrame"] = Block.CFrame})
+            end
+            end
+        end
+    end
+end
+game.StarterGui:SetCore("ChatMakeSystemMessage", {
+Text = "Your base has been saved as "..BaseName;
+Font = Enum.Font.Cartoon;})
+writefile("SavedBases.B2S", tabletostring(savedbases))
+end
+if msg:sub(1, Prefix:len() + string.len("loadbase ")) == Prefix:lower().."loadbase " then
+local basename = msg:sub(10 + Prefix:len())
+local yourbase
+for i,v in pairs(workspace.Bases:GetChildren()) do if v.Owner.Value == lplr.UserId then yourbase = v.Base end end
+for i,v in pairs(yourbase.Parent.Blocks:GetChildren()) do
+delete(v)
+end
+for name, Table in pairs(savedbases) do
+if name:lower() == basename:lower() then
+for i,v in pairs(Table.Blocks) do 
+local base = workspace.Bases[Table.Base].Base
+local x1,y1,z1 = base.CFrame.X, base.CFrame.Y, base.CFrame.Z
+local x2,y2,z2 = v.CFrame.X, v.CFrame.Y, v.CFrame.Z
+local cframe = CFrame.new() + Vector3.new((x2-x1) + yourbase.CFrame.X, (y2-y1) + yourbase.CFrame.Y, (z2-z1) + yourbase.CFrame.Z)
+place(cframe, v.Child)
+end
+end
+end
+end
+if msg == Prefix:lower().."getsavedbases" then
+print("--List of saved bases--")
+for i,v in pairs(savedbases) do
+print(i)
+end
+print("----")
+end
+if msg:sub(1, Prefix:len() + string.len("deletebase ")) == Prefix:lower().."deletebase " then
+local basename = msg:sub(12 + Prefix:len())
+for i,v in pairs(savedbases) do
+if i:lower() == basename:lower() then
+savedbases[basename] = nil
+game.StarterGui:SetCore("ChatMakeSystemMessage", {
+Text = basename.." has been deleted.";
+Font = Enum.Font.Cartoon;})
+end
+end
+writefile("SavedBases.B2S", tabletostring(savedbases))
+end
+if msg:sub(1, Prefix:len() + string.len("renamebase ")) == Prefix:lower().."renamebase " then
+local oldname = msg:sub(12 + Prefix:len())
+for i,v in pairs(savedbases) do
+if oldname:lower():find(i:lower()) then
+local oldstart, oldfinish = oldname:lower():find(i:lower())
+local newname = oldname:sub(oldfinish + 1)
+savedbases[newname] = v
+savedbases[i] = nil
+end
+end
+end
 end)
 getcmds()
 game.StarterGui:SetCore("SendNotification", {
 Title = title;
-Text = "The thanossnap cmd is now an actual thanos snap, but is no longer a player cmd.";
+Text = "Added savebase, loadbase, getsavedbases, deletebase, and renamebase.";
 Duration = 10;
 })
 end
