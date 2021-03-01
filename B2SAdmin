@@ -944,7 +944,8 @@ unpermban
 savebase
 loadbase (basename)
 getsavedbases
-deletebase (basename)]]
+deletebase (basename)
+renamebase (basename)]]
 local getcmds = function()
 print(Commands)
 end
@@ -1215,11 +1216,37 @@ end
 end
 writefile("SavedBases.B2S", tabletostring(savedbases))
 end
+if msg:sub(1, Prefix:len() + string.len("renamebase ")) == Prefix:lower().."renamebase " then
+local old = msg:sub(12 + Prefix:len())
+local findname = false
+for i,v in pairs(savedbases) do
+    if old:lower() == i:lower() then
+        old = i
+        findname = true
+    end
+end
+if findname then
+game.StarterGui:SetCore("ChatMakeSystemMessage", {
+Text = "What would you like to rename "..old.." to?";
+Font = Enum.Font.Cartoon;})
+local new = lplr.Chatted:Wait()
+savedbases[new] = savedbases[old]
+savedbases[old] = nil
+game.StarterGui:SetCore("ChatMakeSystemMessage", {
+Text = "Renamed "..old.." to "..new..".";
+Font = Enum.Font.Cartoon;})
+writefile("SavedBases.B2S", tabletostring(savedbases))
+else
+game.StarterGui:SetCore("ChatMakeSystemMessage", {
+Text = old.." is not a valid base name.";
+Font = Enum.Font.Cartoon;})
+end
+end
 end)
 getcmds()
 game.StarterGui:SetCore("SendNotification", {
 Title = title;
-Text = "Added savebase, loadbase, getsavedbases, and deletebase.";
+Text = "Changed how renamebase works (added cmds: savebase, loadbase, renamebase, deletebase, getsavedbases).";
 Duration = 10;
 })
 end
