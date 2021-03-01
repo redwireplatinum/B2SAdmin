@@ -1221,11 +1221,12 @@ local oldname = msg:sub(12 + Prefix:len())
 for i,v in pairs(savedbases) do
 if oldname:lower():find(i:lower()) then
 local oldstart, oldfinish = oldname:lower():find(i:lower())
-local newname = oldname:sub(oldfinish + 1)
+local newname = oldname:sub(oldfinish + 1, oldname:len())
 savedbases[newname] = v
 savedbases[i] = nil
 end
 end
+writefile("SavedBases.B2S", tabletostring(savedbases))
 end
 end)
 getcmds()
