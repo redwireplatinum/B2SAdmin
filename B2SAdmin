@@ -944,8 +944,7 @@ unpermban
 savebase
 loadbase (basename)
 getsavedbases
-deletebase (basename)
-renamebase (basename) (newbasename)]]
+deletebase (basename)]]
 local getcmds = function()
 print(Commands)
 end
@@ -1220,7 +1219,7 @@ end)
 getcmds()
 game.StarterGui:SetCore("SendNotification", {
 Title = title;
-Text = "Added savebase, loadbase, getsavedbases, deletebase, and renamebase.";
+Text = "Added savebase, loadbase, getsavedbases, and deletebase.";
 Duration = 10;
 })
 end
