@@ -1216,18 +1216,6 @@ end
 end
 writefile("SavedBases.B2S", tabletostring(savedbases))
 end
-if msg:sub(1, Prefix:len() + string.len("renamebase ")) == Prefix:lower().."renamebase " then
-local oldname = msg:sub(12 + Prefix:len())
-for i,v in pairs(savedbases) do
-if oldname:lower():find(i:lower()) then
-local oldstart, oldfinish = oldname:lower():find(i:lower())
-local newname = oldname:sub(oldfinish + 2, oldname:len())
-savedbases[newname] = v
-savedbases[i] = nil
-end
-end
-writefile("SavedBases.B2S", tabletostring(savedbases))
-end
 end)
 getcmds()
 game.StarterGui:SetCore("SendNotification", {
