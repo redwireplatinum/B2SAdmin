@@ -592,7 +592,10 @@ end
 end)
 local plraura = function(child)
     game.RunService.Heartbeat:connect(function()
-if lplr.Character and lplr.Character:FindFirstChild("HumanoidRootPart") and child:FindFirstChild("Head") and child.Head:FindFirstChild("Neck") and child.Name ~= lplr.Name then
+	local successs = pcall(function()
+	return lplr.Character.HumanoidRootPart and child.Head.Neck
+	end)
+if success and child.Name ~= lplr.Name then
 local pos = (lplr.Character.HumanoidRootPart.Position - child.Head.Position).Magnitude
 if pos < aura and killaura == true then
 delete(child.Head.Neck)
@@ -1247,7 +1250,7 @@ end)
 getcmds()
 game.StarterGui:SetCore("SendNotification", {
 Title = title;
-Text = "Changed how renamebase works (added cmds: savebase, loadbase, renamebase, deletebase, getsavedbases).";
+Text = "Fixed an error with enemyaura (added cmds: savebase, loadbase, renamebase, deletebase, getsavedbases).";
 Duration = 10;
 })
 end
