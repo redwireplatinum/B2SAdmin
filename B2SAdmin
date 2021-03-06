@@ -592,7 +592,7 @@ end
 end)
 local plraura = function(child)
     game.RunService.Heartbeat:connect(function()
-	local successs = pcall(function()
+	local success = pcall(function()
 	return lplr.Character.HumanoidRootPart and child.Head.Neck
 	end)
 if success and child.Name ~= lplr.Name then
