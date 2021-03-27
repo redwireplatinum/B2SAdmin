@@ -223,6 +223,7 @@ end
 end
 return fns
 end
+local catchrepeats = {}
 function tabletostring(Table, IncludeWhitespaces)
 table.insert(catchrepeats, Table)
     local entry = "local savedtable = {"
