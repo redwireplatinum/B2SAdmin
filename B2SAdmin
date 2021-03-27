@@ -308,6 +308,7 @@ end
     end
     if s:sub(1,entry:len()) ~= entry then s = entry..s end
     s = s.." return savedtable"
+	catchrepeats = {}
     return s
 end
 local stringtobool = function(str)
