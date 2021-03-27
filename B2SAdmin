@@ -116,17 +116,13 @@ local permbantable = {}
 if not isfile("PermBannedPlayers.B2S") then
 writefile("PermBannedPlayers.B2S", "{}")
 else
-loadstring("_G.ImportTable = "..readfile("PermBannedPlayers.B2S"))()
-permbantable = _G.ImportTable
-_G.ImportTable = nil
+permbantable = loadfile("PermBannedPlayers.B2S")()
 end
 local savedbases = {}
 if not isfile("SavedBases.B2S") then
 writefile("SavedBases.B2S", "{}")
 else
-loadstring("_G.SavedBases = "..readfile("SavedBases.B2S"))()
-savedbases = _G.SavedBases
-_G.SavedBases = nil
+savedbases = loadfile("SavedBases.B2S")()
 end
 local killaura = false
 local mobaura = false
@@ -228,9 +224,11 @@ end
 return fns
 end
 function tabletostring(Table, IncludeWhitespaces)
-    local s = "{"
+table.insert(catchrepeats, Table)
+    local entry = "local savedtable = {"
+    local s = entry
     if IncludeWhitespaces then
-        s = "{\n"
+        s = entry.."\n"
     end
     function stringmethod(i,v)
 	function fixstring(s)
@@ -251,13 +249,20 @@ function tabletostring(Table, IncludeWhitespaces)
         local part2 = ""
 function modify(test, IncludeBrackets)
 	local st = ""
-	local supportedtypes = {"number", "boolean", "string", "EnumItem", "table", "Instance", "Vector3", "CFrame", "Color3", "BrickColor","Enum"}
+	local supportedtypes = {"number", "boolean", "string", "EnumItem", "table", "Instance", "Vector3", "CFrame", "Color3", "BrickColor","Enum","Enums"}
         if type(test) == "number" or typeof(test) == "EnumItem" or type(test) == "boolean" then
             st = tostring(test)
         elseif type(test) == "string" then
             st = "'"..fixstring(test).."'"
         elseif type(test) == "table" then
+            if not table.find(catchrepeats, test) then
+            table.insert(catchrepeats, test)
 			st = tabletostring(test, IncludeWhitespaces)
+			else
+			part1 = ""
+			part2 = ""
+			st = ""
+			end
 		elseif typeof(test) == "Instance" then
 			st = GetFullName(test)
 		elseif typeof(test) == "Vector3" or typeof(test) == "CFrame" or typeof(test) == "Color3" then
@@ -266,17 +271,18 @@ function modify(test, IncludeBrackets)
 			st = typeof(test)..".new('"..tostring(test).."')"
 		elseif typeof(test) == "Enum" then
 		    st = "Enum."..tostring(test)
+		elseif typeof(test) == "Enums" then
+		st = "Enum"
+		else
 		st = tostring(test)
 		end
 	if IncludeBrackets then
 		st = "["..st.."]"
 	end
 	if not table.find(supportedtypes, type(test)) and not table.find(supportedtypes, typeof(test)) then
-		if not IncludeBrackets then
-		error("Whitespaces must be enabled.")
-		else
-		part1 = "--"..part1
-		end
+		part1 = ""
+		part2 = ""
+		st = ""
 	end
 	return st
 end
@@ -285,9 +291,11 @@ end
         end
         part1 = modify(i, true)
         part2 = modify(v)
-		local count = 0
-		for i,v in pairs(Table) do count = count + 1 end
+        if part1 ~= "" and part2 ~= "" then
         return part1.." = "..part2..String
+        else
+        return part1
+        end
     end
     for i,v in pairs(Table) do
         s = s..stringmethod(i,v)
@@ -297,6 +305,8 @@ end
     else
     s = s:sub(1,s:len()-2).."\n}"
     end
+    if s:sub(1,entry:len()) ~= entry then s = entry..s end
+    s = s.." return savedtable"
     return s
 end
 local stringtobool = function(str)
@@ -1250,7 +1260,7 @@ end)
 getcmds()
 game.StarterGui:SetCore("SendNotification", {
 Title = title;
-Text = "Fixed an error with enemyaura (added cmds: savebase, loadbase, renamebase, deletebase, getsavedbases).";
+Text = "Updated file systems, not that it matters, since it doesn't look like anyone uses this script LMAO.";
 Duration = 10;
 })
 end
