@@ -224,12 +224,9 @@ end
 return fns
 end
 local catchrepeats = {}
-function tabletostring(Table, IncludeWhitespaces, IgnoreEntry)
+function tabletostring(Table, IncludeWhitespaces, InternalTable)
 table.insert(catchrepeats, Table)
-    local entry = "local savedtable = {"
-	if IgnoreEntry then
-	entry = "{"
-	end
+local entry = "{"
     local s = entry
     if IncludeWhitespaces then
         s = entry.."\n"
@@ -261,7 +258,7 @@ function modify(test, IncludeBrackets)
         elseif type(test) == "table" then
             if not table.find(catchrepeats, test) then
             table.insert(catchrepeats, test)
-			st = tabletostring(test, IncludeWhitespaces, true)
+			st = tabletostring(test, IncludeWhitespaces, true, true)
 			else
 			part1 = ""
 			part2 = ""
@@ -310,8 +307,9 @@ end
     s = s:sub(1,s:len()-2).."\n}"
     end
     if s:sub(1,entry:len()) ~= entry then s = entry..s end
-    s = s.." return savedtable"
-	catchrepeats = {}
+    if not InternalTable then
+        s = "local savedtable = "..s.." return savedtable"
+    end
     return s
 end
 local stringtobool = function(str)
