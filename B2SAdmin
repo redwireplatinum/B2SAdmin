@@ -258,7 +258,7 @@ function modify(test, IncludeBrackets)
         elseif type(test) == "table" then
             if not table.find(catchrepeats, test) then
             table.insert(catchrepeats, test)
-			st = tabletostring(test, IncludeWhitespaces, true, true)
+			st = tabletostring(test, IncludeWhitespaces, true)
 			else
 			part1 = ""
 			part2 = ""
