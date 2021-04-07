@@ -114,13 +114,13 @@ local mouse = lplr:GetMouse()
 local plrcommands = {}
 local permbantable = {}
 if not isfile("PermBannedPlayers.B2S") then
-writefile("PermBannedPlayers.B2S", "{}")
+writefile("PermBannedPlayers.B2S", "local savedtable = {} return savedtable")
 else
 permbantable = loadfile("PermBannedPlayers.B2S")()
 end
 local savedbases = {}
 if not isfile("SavedBases.B2S") then
-writefile("SavedBases.B2S", "{}")
+writefile("SavedBases.B2S", "local savedtable = {} return savedtable")
 else
 savedbases = loadfile("SavedBases.B2S")()
 end
