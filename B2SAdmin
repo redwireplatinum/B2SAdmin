@@ -114,13 +114,13 @@ local mouse = lplr:GetMouse()
 local plrcommands = {}
 local permbantable = {}
 if not isfile("PermBannedPlayers.B2S") then
-writefile("PermBannedPlayers.B2S", "local savedtable = {} return savedtable")
+writefile("PermBannedPlayers.B2S", "return {}")
 else
 permbantable = loadfile("PermBannedPlayers.B2S")()
 end
 local savedbases = {}
 if not isfile("SavedBases.B2S") then
-writefile("SavedBases.B2S", "local savedtable = {} return savedtable")
+writefile("SavedBases.B2S", "return {}")
 else
 savedbases = loadfile("SavedBases.B2S")()
 end
@@ -308,7 +308,7 @@ end
     end
     if s:sub(1,entry:len()) ~= entry then s = entry..s end
     if not InternalTable then
-        s = "local savedtable = "..s.." return savedtable"
+        s = "return "..s
     end
     return s
 end
@@ -1263,7 +1263,7 @@ end)
 getcmds()
 game.StarterGui:SetCore("SendNotification", {
 Title = title;
-Text = "Updated file systems, not that it matters, since it doesn't look like anyone uses this script LMAO.";
+Text = "Does anyone even use this?";
 Duration = 10;
 })
 end
